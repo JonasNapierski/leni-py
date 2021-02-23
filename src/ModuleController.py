@@ -1,22 +1,35 @@
 from glob import glob
-
+from io import FileIO
 from src.Module import Module
-
+import json
+import os
 
 class ModuleController():
     module_names = []
     modules= []
+    registry_file_name="registry.json"
+
     def __init__(self, module_path):
+        """
+        ModuleController search in the 'module_path' for 'Modules'
+
+        Module: A module is named after the directory it is contained.
+                -> in the folder must be a module.json file!
+                -> there is a main file which is register in the module.json
+        """
         self.module_path = module_path
     
     def find_all_files(self):
+        """
+        List all directories in the Modules-folder and add them to the 'module_names'
+        """
         self.module_names = glob(f"{self.module_path}/*")
 
         for i in range(0, len(self.module_names)):
             self.module_names[i] = self.module_names[i].replace(f"{self.module_path}\\", "")
         return self.module_names
 
-    def load_all_module(self):
+    def load_all_module(self) -> None:
         if self.module_names == None :
             self.find_all_files()
 
@@ -26,3 +39,17 @@ class ModuleController():
     def load_module(self, name):
         return Module(name, f"{self.module_path}/{name}")
 
+    def getModule(self, index):
+        return self.modules[index]
+
+    def getModuleRange(self, bottom, top):
+        m_array = []
+        for i in range(bottom, top):
+            m_array.append(self.getModule(i))
+        return m_array
+
+    def create_register_file(self):
+        with open(f"{self.module_path}/{self.registry_file_name}") as f:
+            # check if File don't exists
+            registry = json.loads(f.read())
+        
