@@ -1,5 +1,5 @@
 def exec(msg):
-    print("Hello, World")
+    pass
 
 def init():
     print("HelloWorld")

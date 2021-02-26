@@ -1,4 +1,10 @@
 {
     "main": "helloworld",
-    "description": "testi test"
+    "description": "testi test",
+    "examples": [
+        "hello, world",
+        "hello",
+        "hi",
+        "guten tag"
+    ]
 }

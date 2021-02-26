@@ -22,7 +22,7 @@ class NLTKUtils():
         words = [stem(w) for w in words]
         -> ["organ", "organ", "organ"]
         """
-        return stemmer.stem(word.lower())
+        return self.stemmer.stem(word.lower())
 
 
     def bag_of_words(self, tokenized_sentence, words):
@@ -35,7 +35,7 @@ class NLTKUtils():
         bog   = [  0 ,    1 ,    0 ,   1 ,    0 ,    0 ,      0]
         """
         # stem each word
-        sentence_words = [stem(word) for word in tokenized_sentence]
+        sentence_words = [self.stem(word) for word in tokenized_sentence]
         # initialize bag with 0 for each word
         bag = np.zeros(len(words), dtype=np.float32)
         for idx, w in enumerate(words):
