@@ -1,5 +1,6 @@
 def exec(msg):
-    pass
+    
+    return {"msg": f"test: {msg}"}
 
 def init():
     print("Heyho")

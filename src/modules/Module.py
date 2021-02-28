@@ -18,11 +18,14 @@ class Module():
         self.load()
 
     def loadConfig(self):
-        with open(f"{self.module_path}\\module.json", "r") as file:
-            tmp = json.loads(file.read())
+        tmp = self.getConfig()
         
         self.mainFileName = tmp['main']
         self.mainFile = f"{self.module_path}/{tmp['main']}"
+
+    def getConfig(self):
+       with open(f"{self.module_path}\\module.json", "r") as file:
+            return json.loads(file.read()) 
 
     def loadModule(self):
         self.module = importlib.import_module(f"modules.{self.module_name}.{self.mainFileName}")
@@ -33,4 +36,4 @@ class Module():
 
     def exec(self, msg):
         importlib.reload(self.module)
-        self.module.exec(msg)
+        return self.module.exec(msg)

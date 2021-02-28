@@ -1,6 +1,6 @@
 from glob import glob
 from io import FileIO
-from src.Module import Module
+from src.modules.Module import Module
 import json
 import os
 

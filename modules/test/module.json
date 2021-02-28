@@ -1,4 +1,10 @@
 {
     "main": "test",
-    "description": "testi test"
+    "description": "testi test",
+    "examples": [
+        "test",
+        "ich bin ein test",
+        "teste mich",
+        "ping"
+    ]
 }
