@@ -1,0 +1,17 @@
+{
+    "main": "weather",
+    "description": "Simple Weather Module for leni",
+    "author": "Jonas Napierski",
+    "api_token": "token",
+    "examples": [
+        "wie wird das wetter in",
+        "wie wird morgen das wetter in quarnstedt",
+        "wie warm wird es morgen",
+        "scheint morgen die sonne",
+        "wie ist die temperatur morgen in",
+        "regnet es morgen in",
+        "gewittert es morgen in",
+        "wie ist die temperatur in",
+        "wie heiß ist es gerade in"
+    ]
+}
