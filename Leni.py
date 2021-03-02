@@ -48,7 +48,7 @@ def index():
         
         (module, weight) = bot.process(data)
 
-        if weight > 0.5:
+        if weight > 0.2:
             for m in mc.modules:
                 if str(m.module_name) == str(module):
                     return render_template("index.html", response=f'Leni: {m.exec(data)["msg"]}', question=data)
