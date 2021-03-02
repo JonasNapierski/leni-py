@@ -4,13 +4,14 @@ from src.modules.ModuleController import ModuleController
 from flask import Flask, Request, jsonify, render_template, request
 from  src.ai.AI import Training
 import json
-
+import requests
 
 app = Flask(__name__)
 
 
 
-
+HOST="127.0.0.1"
+PORT=6248
 
 
 
@@ -28,18 +29,31 @@ for m in mc.modules:
 
 # bot.add(["hi", "hello", "welcome", "tach", "guten morgen", "guten tag"] ,"morning")
 # bot.add(["cia", "tschüss", "bye", "bis bald"],"goodbye")
-#bot.filter([".","!","?"])
+# bot.filter([".","!","?"])
 
-#bot.create_set()
-#bot.train(num_epochs=5000, batch_size=8, learning_rate=0.001, hidden_size=8, num_workers=0, FILE_PATH="DATA.pth")
+# bot.create_set()
+# bot.train(num_epochs=5000, batch_size=8, learning_rate=0.001, hidden_size=8, num_workers=0, FILE_PATH="DATA.pth")
 
 bot.load(FILE_PATH="DATA.pth")
 bot.print()
 
 
-@app.route("/")
+@app.route("/", methods=["POST", "GET"])
 def index():
-    return jsonify("TEST")
+    if request.method == "GET":
+        msg = "Hey! Chat with me"
+        data=""
+    else:
+        data = request.form['user_input']
+        
+        (module, weight) = bot.process(data)
+
+        if weight > 0.5:
+            for m in mc.modules:
+                if str(m.module_name) == str(module):
+                    return render_template("index.html", response=f'Leni: {m.exec(data)["msg"]}', question=data)
+    return render_template("index.html", response="Leni: Idk", question=data)
+    
 
 @app.route("/api/modules", methods=['GET'])
 def list_all_module():
@@ -59,9 +73,11 @@ def list_module(module):
 
 @app.route("/api/process", methods=["POST"])
 def process():
-    data = request.json
-    
-    msg = data['msg']
+    if request.is_json:
+        data = request.json
+        msg = data['msg']
+    else:
+        msg = request.form['msg']
 
     (module, weight) = bot.process(msg)
     
@@ -69,8 +85,9 @@ def process():
     for m in mc.modules:
         
         if str(m.module_name) == str(module):
-            return jsonify(m.exec(msg))
+            if request.is_json:
+                return jsonify(m.exec(msg))
     return jsonify(data)
 
 if __name__ == "__main__":
-    app.run(host="localhost", port=6248, debug=True)
+    app.run(host=HOST, port=PORT, debug=True)
