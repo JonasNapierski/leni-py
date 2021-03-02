@@ -2,12 +2,13 @@ from glob import glob
 from io import FileIO
 from src.modules.Module import Module
 import json
+import re
 import os
 
 class ModuleController():
     module_names = []
     modules= []
-    registry_file_name="registry.json"
+    registry_file_name="module.json"
 
     def __init__(self, module_path):
         """
@@ -26,7 +27,7 @@ class ModuleController():
         self.module_names = glob(f"{self.module_path}/*")
 
         for i in range(0, len(self.module_names)):
-            self.module_names[i] = self.module_names[i].replace(f"{self.module_path}\\", "")
+            self.module_names[i] = re.sub(rf'{self.module_path}(/|\\)*', '', self.module_names[i])
         return self.module_names
 
     def load_all_module(self) -> None:

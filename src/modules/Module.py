@@ -24,7 +24,7 @@ class Module():
         self.mainFile = f"{self.module_path}/{tmp['main']}"
 
     def getConfig(self):
-       with open(f"{self.module_path}\\module.json", "r") as file:
+       with open(f"{self.module_path}/module.json", "r") as file:
             return json.loads(file.read()) 
 
     def loadModule(self):
