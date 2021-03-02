@@ -21,5 +21,8 @@ def exec(msg):
                 
     api_url = api_url.replace("{city name}", city)
 
-    data = requests.post(api_url)
-    return data.json()
+    data = requests.post(api_url).json()
+    temp = float(data['main']['temp'])
+    temp = temp - 273.15
+    #return data
+    return {"temp": temp, "msg": f"In {city} sind es {temp:.2f}°c"}
