@@ -1,9 +1,0 @@
-{
-    "main": "stocks",
-    "description": "A Simple Webscraper for Lang und Schwarz",
-    "examples": [
-        "wie stehen die aktien von",
-        "wie ist der kurs von",
-        "bei wie viel liegt die aktie von"
-    ]
-}
