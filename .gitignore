@@ -67,7 +67,8 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-
+modules/*
+modules/
 # C extensions
 *.so
 
