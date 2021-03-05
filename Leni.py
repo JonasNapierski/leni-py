@@ -40,19 +40,7 @@ bot.print()
 
 @app.route("/", methods=["POST", "GET"])
 def index():
-    if request.method == "GET":
-        msg = "Hey! Chat with me"
-        data=""
-    else:
-        data = request.form['user_input']
-        
-        (module, weight) = bot.process(data)
-
-        if weight > 0.2:
-            for m in mc.modules:
-                if str(m.module_name) == str(module):
-                    return render_template("index.html", response=f'Leni: {m.exec(data)["msg"]}', question=data)
-    return render_template("index.html", response="Leni: Idk", question=data)
+    return render_template("index.html")
     
 
 @app.route("/api/modules", methods=['GET'])
@@ -73,12 +61,9 @@ def list_module(module):
 
 @app.route("/api/process", methods=["POST"])
 def process():
-    if request.is_json:
-        data = request.json
-        msg = data['msg']
-    else:
-        msg = request.form['msg']
-
+    data = request.json
+    msg = data['msg']
+    
     (module, weight) = bot.process(msg)
     
     print(f"{module}:{weight:.4f}")
