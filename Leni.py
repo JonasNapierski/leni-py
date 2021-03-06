@@ -15,28 +15,33 @@ PORT=6248
 
 
 
-mc = ModuleController("./modules")
-mc.find_all_files()
-mc.load_all_module()
-
-bot = Training()
-
-for m in mc.modules:
-    cfg = m.getConfig()
-    bot.add(cfg['examples'], m.module_name)
-
-
-
 # bot.add(["hi", "hello", "welcome", "tach", "guten morgen", "guten tag"] ,"morning")
 # bot.add(["cia", "tschüss", "bye", "bis bald"],"goodbye")
 # bot.filter([".","!","?"])
 
 # bot.create_set()
 # bot.train(num_epochs=5000, batch_size=8, learning_rate=0.001, hidden_size=8, num_workers=0, FILE_PATH="DATA.pth")
+bot = Training()
+mc = ModuleController("./modules")
+mc.module_names = []
+mc.find_all_files()
+mc.load_all_module()
 
 bot.load(FILE_PATH="DATA.pth")
 bot.print()
+for m in mc.modules:
+    cfg = m.getConfig()
+    bot.add(cfg['examples'], m.module_name)
 
+#bot.create_set()
+#bot.train(num_epochs=5000, batch_size=8, learning_rate=0.001, hidden_size=8, num_workers=0, FILE_PATH="DATA.pth")
+
+bot.load(FILE_PATH="DATA.pth")
+bot.print() 
+
+@app.route("/train")
+def train():
+    return jsonify(True)
 
 @app.route("/", methods=["POST", "GET"])
 def index():
