@@ -1,20 +1,208 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <div>
-        <a> {{response}}</a><br>
-        <a> {{question}}</a>
+<html>
+  <head>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing Script&display=swap" rel="stylesheet"> 
+  
+  <style>
+    body {
+      margin: 0px;
+      padding: 0px;
+    }
+    .header {
+      position: relative;
+      background-color: #713770;
+      margin: 0px;
+      padding: 0px;
+      height: 10%;
+      width: 100%;
+    }
+    .shadow_header {
+      position: absolute;
+      bottom: 0%;
+      width: 100%;
+      height: 6%;
+      background-color: #552954;
+    }
+
+    .content {
+      padding: 0px;
+      margin-top: 0%;
+      height: 85%;
+      width: 100%;
+      background-color: #B34270;
+    }
+    .footer {
+      background-color: #713770;
+      height: 5%;
+      width: 100%;
+    }
+    .icons {
+      align-items: center;
+      position: absolute;
+      top: 25%;
+      left: -10%;
+      height: 50%;
+      width: 50%;
+    }
+
+    .header_title {
+      font-family: 'Dancing Script';
+      top: 15%;
+      font-size: 20pt;
+      color: #ffffff;
+      position: absolute;
+      text-align: center;
+      width: 50%;
+      left: 25%;
+      padding: 0px;
+      margin: 0px;
+    }
+    .header_title a{
+      align-items: center;
+    }
+    @viewport{
+      zoom: 1.0;
+      width: extend-to-zoom;
+    }
+
+    @-ms-viewport{
+      zoom: 1.0;
+      width: extend-to-zoom;
+    }
+    form {
+      position: relative;
+      width: 70%;
+      align-items: center;
+      height: 100%;
+    }
+    .text_input {
+      position: absolute;
+      bottom: 3%;
+      left: 30%;
+      width: 30%;
+      background-color: #713770;
+      color: #fff;
+      border: none;
+      border-bottom: 3px, solid, #ddd;
+    }
+    .chat {
+      position: relative;
+      color: #fff;
+      width: 30%;
+      height: 90%;
+    }
+    .chat_input {
+      height: 10%;
+    }
+    .msg {
+      height: 10%;
+      width: 100%;
+      border: 2px solid gray;
+      margin-bottom: 1%;
+    }
+    .leni {
+      position: absolute;
+      text-align: left;
+      margin-top: 1%;
+      margin-left: 2%;
+      color: #fff;
+      left: 0pt;
+    }
+    .you {
+      position: absolute;
+      text-align: left;
+      margin-top: 1%;
+      margin-right: 2%;
+      right: 0pt;
+      color: #fff;
+    }
+    .submit_input {
+      position: absolute;
+      height: 10%;
+      bottom: 3%;
+      right: 30%;
+      width: 10%;
+    }
+  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <div class="header">
+      <a href="http://github.com/jonasnapierski">
+        <img src="/static/icons/github.svg" class="icons">
+      </a>
+      <div class="header_title">Welcome to Leni</div>
+      
+      <div class="shadow_header"></div>
     </div>
-    <div>
-        <form action="/" method="POST">
-            <input type="text" name="user_input" maxlength="5000" placeholder="Hey! Chat with me">
-        </form>
+    <div class="content">
+      <center>
+        <div class="chat"> </div>
+        <div class="chat_input">
+            <input type="text" id="inputuser"  placeholder="Chat with me!" class="text_input">
+            <button onclick="button_click()" value="" id="userButton" class="submit_input"></button> 
+        </div>
+      </center> 
     </div>
-</body>
+    <div class="footer">
+    </div>
+    <script>
+      var chat = document.getElementsByClassName("chat")[0];
+      var max = 6;
+      var msgs = [];
+      var input = document.getElementById("inputuser");
+      var submit = document.getElementById("userButton");
+
+      function button_click(){
+        var input = document.getElementById("inputuser");  
+        var msg = input.value;
+        request_data(msg);
+      }
+
+      function render_prop(){
+
+      }
+
+      function addMessage(msg, leni){
+
+        if (msgs.length > max){
+          msgs.shift();
+        }
+        if(leni){
+          msgs.push('<div class="msg"><span class="leni">Leni: {msg}</span></div>'.replace("{msg}", msg));
+        }else{
+          msgs.push('<div class="msg"><span class="you">{msg}</span></div>'.replace("{msg}", msg));
+        }
+
+        var s = "";
+        for(var i = 0; i < msgs.length; i++){
+          s = s + msgs[i];
+        }
+        chat.innerHTML = s;
+      }
+      function request_data(msg){
+        addMessage(msg, false);
+        body = JSON.stringify({"msg": msg});
+
+        var http = new XMLHttpRequest();
+        var url = '/api/process';
+        http.open('POST', url, true);
+        
+        http.setRequestHeader('Content-type', 'application/json');
+
+        http.onreadystatechange = function() {//Call a function when the state changes.
+          if(http.readyState == 4 && http.status == 200) {
+              res = JSON.parse(http.responseText);
+              
+              addMessage(res['msg'], true);
+          }
+        }
+       
+        http.send(body)
+      }
+
+
+      
+    </script>
+  </body>
 </html>

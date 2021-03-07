@@ -15,44 +15,37 @@ PORT=6248
 
 
 
-mc = ModuleController("./modules")
-mc.find_all_files()
-mc.load_all_module()
-
-bot = Training()
-
-for m in mc.modules:
-    cfg = m.getConfig()
-    bot.add(cfg['examples'], m.module_name)
-
-
-
 # bot.add(["hi", "hello", "welcome", "tach", "guten morgen", "guten tag"] ,"morning")
 # bot.add(["cia", "tschüss", "bye", "bis bald"],"goodbye")
 # bot.filter([".","!","?"])
 
 # bot.create_set()
 # bot.train(num_epochs=5000, batch_size=8, learning_rate=0.001, hidden_size=8, num_workers=0, FILE_PATH="DATA.pth")
+bot = Training()
+mc = ModuleController("./modules")
+mc.module_names = []
+mc.find_all_files()
+mc.load_all_module()
 
 bot.load(FILE_PATH="DATA.pth")
 bot.print()
+for m in mc.modules:
+    cfg = m.getConfig()
+    bot.add(cfg['examples'], m.module_name)
 
+#bot.create_set()
+#bot.train(num_epochs=5000, batch_size=8, learning_rate=0.001, hidden_size=8, num_workers=0, FILE_PATH="DATA.pth")
+
+bot.load(FILE_PATH="DATA.pth")
+bot.print() 
+
+@app.route("/train")
+def train():
+    return jsonify(True)
 
 @app.route("/", methods=["POST", "GET"])
 def index():
-    if request.method == "GET":
-        msg = "Hey! Chat with me"
-        data=""
-    else:
-        data = request.form['user_input']
-        
-        (module, weight) = bot.process(data)
-
-        if weight > 0.2:
-            for m in mc.modules:
-                if str(m.module_name) == str(module):
-                    return render_template("index.html", response=f'Leni: {m.exec(data)["msg"]}', question=data)
-    return render_template("index.html", response="Leni: Idk", question=data)
+    return render_template("index.html")
     
 
 @app.route("/api/modules", methods=['GET'])
@@ -73,12 +66,9 @@ def list_module(module):
 
 @app.route("/api/process", methods=["POST"])
 def process():
-    if request.is_json:
-        data = request.json
-        msg = data['msg']
-    else:
-        msg = request.form['msg']
-
+    data = request.json
+    msg = data['msg']
+    
     (module, weight) = bot.process(msg)
     
     print(f"{module}:{weight:.4f}")
