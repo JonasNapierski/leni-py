@@ -8,10 +8,12 @@ import requests
 
 app = Flask(__name__)
 
+with open("./config.json", "r") as f:
+    cfg = json.loads(f.read())
 
 
-HOST="0.0.0.0"
-PORT=6248
+HOST=cfg['host']
+PORT=cfg['port']
 
 
 
@@ -30,8 +32,8 @@ mc.load_all_module()
 bot.load(FILE_PATH="DATA.pth")
 bot.print()
 for m in mc.modules:
-    cfg = m.getConfig()
-    bot.add(cfg['examples'], m.module_name)
+    mcfg = m.getConfig()
+    bot.add(mcfg[cfg['language']], m.module_name)
 
 #bot.create_set()
 #bot.train(num_epochs=5000, batch_size=8, learning_rate=0.001, hidden_size=8, num_workers=0, FILE_PATH="DATA.pth")
