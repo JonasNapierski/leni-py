@@ -8,10 +8,12 @@ import requests
 
 app = Flask(__name__)
 
+with open("./config.json", "r") as f:
+    cfg = json.loads(f.read())
 
 
-HOST="0.0.0.0"
-PORT=6248
+HOST=cfg['host']
+PORT=cfg['port']
 
 
 
@@ -22,8 +24,8 @@ mc.load_all_module()
 bot = Training()
 
 for m in mc.modules:
-    cfg = m.getConfig()
-    bot.add(cfg['examples'], m.module_name)
+    mcfg = m.getConfig()
+    bot.add(mcfg[cfg['language']], m.module_name)
 
 
 
