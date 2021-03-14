@@ -11,6 +11,9 @@ app = Flask(__name__)
 with open("./config.json", "r") as f:
     cfg = json.loads(f.read())
 
+with open(cfg['token_file'], "r+") as token_file:
+    tokens = json.loads(token_file.read())
+
 
 HOST=cfg['host']
 PORT=cfg['port']
@@ -41,26 +44,40 @@ for m in mc.modules:
 bot.load(FILE_PATH="DATA.pth")
 bot.print() 
 
-@app.route("/train")
-def train():
-    return jsonify(True)
+
+def check_for_token(param):
+    if param == None:
+        return False
+    
+    for token in tokens:
+        if token == param['key']:
+            return True
+    return False
+
 
 @app.route("/", methods=["POST", "GET"])
 def index():
-    return render_template("index.html")
+    return render_template("icon.html")
     
 
 @app.route("/api/modules", methods=['GET'])
 def list_all_module():
+    if check_for_token(request.args):
+        return jsonify("INVALID API KEY")
+
     mm = []
 
     for m in mc.modules:
         mm.append(m.module_name)
 
     return jsonify(mm)
+    
 
 @app.route("/api/module/<module>", methods=['GET'])
 def list_module(module):
+    if check_for_token(request.args):
+        return jsonify("INVALID API KEY")
+
     print(module)
     for m in mc.modules:
         if m.module_name == str(module):
@@ -68,6 +85,9 @@ def list_module(module):
 
 @app.route("/api/process", methods=["POST"])
 def process():
+    if check_for_token(request.args):
+        return jsonify("INVALID API KEY")
+
     data = request.json
     msg = data['msg']
     
