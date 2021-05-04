@@ -69,6 +69,8 @@ __pycache__/
 
 modules/*
 modules/
+
+data/*
 # C extensions
 *.so
 

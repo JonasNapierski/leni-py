@@ -1,10 +1,13 @@
 import os 
 from src.modules.Module import Module
 from src.modules.ModuleController import ModuleController
+from src.user.UserManager import  UserManager
 from flask import Flask, Request, jsonify, render_template, request
 from  src.ai.AI import Training
+from src.user.User import User
 import json
 import requests
+
 
 app = Flask(__name__)
 
@@ -26,6 +29,7 @@ PORT=cfg['port']
 
 # bot.create_set()
 # bot.train(num_epochs=5000, batch_size=8, learning_rate=0.001, hidden_size=8, num_workers=0, FILE_PATH="DATA.pth")
+
 bot = Training()
 mc = ModuleController("./modules")
 mc.module_names = []
@@ -45,6 +49,20 @@ bot.load(FILE_PATH="DATA.pth")
 bot.print() 
 
 
+userManager = UserManager("./data/")
+
+users = userManager.get_users()
+
+for i in tokens:
+    print(tokens[i])
+    if userManager.user_exists(tokens[i]['user']):
+        userManager.get_user(tokens[i]['user']).add_token(i)
+
+for user in users:
+    for module in mc.modules:
+        user.copy_config(module.module_name, module.getConfig())
+
+
 def check_for_token(param):
     if param == None:
         return False
@@ -55,9 +73,13 @@ def check_for_token(param):
     return False
 
 
+@app.route("/users")
+def get_users():
+    pass
+
 @app.route("/", methods=["POST", "GET"])
 def index():
-    return render_template("icon.html")
+    return render_template("index.html")
     
 
 @app.route("/api/modules", methods=['GET'])
@@ -75,7 +97,7 @@ def list_all_module():
 
 @app.route("/api/module/<module>", methods=['GET'])
 def list_module(module):
-    if check_for_token(request.args):
+    if not check_for_token(request.args):
         return jsonify("INVALID API KEY")
 
     print(module)
@@ -85,7 +107,7 @@ def list_module(module):
 
 @app.route("/api/process", methods=["POST"])
 def process():
-    if check_for_token(request.args):
+    if not check_for_token(request.args):
         return jsonify("INVALID API KEY")
 
     data = request.json
@@ -97,9 +119,14 @@ def process():
     for m in mc.modules:
         
         if str(m.module_name) == str(module):
+            
+            
+
             if request.is_json:
-                return jsonify(m.exec(msg))
+                user = userManager.get_user_by_token(request.args['key'])
+                return jsonify(m.exec(msg, user))
     return jsonify(data)
+
 
 if __name__ == "__main__":
     app.run(host=HOST, port=PORT, debug=True)
