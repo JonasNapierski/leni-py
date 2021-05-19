@@ -73,10 +73,6 @@ def check_for_token(param):
     return False
 
 
-@app.route("/users")
-def get_users():
-    pass
-
 @app.route("/", methods=["POST", "GET"])
 def index():
     return render_template("index.html")
