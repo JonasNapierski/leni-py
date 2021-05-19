@@ -20,14 +20,24 @@ class TokenManager():
         for t in self.tokens:
             if t.name == tokenid:
                 return t
-
+    
+    def loadTokens(self):
+        self.tokens = []
+        with open(self.path, "r") as f:
+            json_ = json.loads(f.read())
+            
+            for object in json_:
+                print(object)
+                tkData = TokenData(object["userid"], object["timestamp"], object["name"])
+                self.tokens.append(tkData)
+ 
     def  saveTokens(self):
         with open(self.path, "w") as f:
             a = []
             for t in self.tokens:
                 temp = { "userid":  t.userid, "timestamp": t.timestamp, "name": t.name}
 
-                a.append(json.dumps(temp))
+                a.append(temp)
 
             f.write(json.dumps(a))
 
@@ -42,12 +52,15 @@ class TokenManager():
     def getTokens(self):
         return self.tokens
 
-@dataclass(frozen=True, order=True)
+    def __contains__(self, tokenid):
+        try:
+            return self.getTokenById(tokenid).name == tokenid
+        except:
+            return False
 
-class TokenData:
-    userid: str
-    timestamp: int
-    name: str
+
+
+
 
 class Token():
 
@@ -71,3 +84,9 @@ class Token():
     def toJSON(self):
         return json.dumps(self, default=lambda o: o.__dict__, 
             sort_keys=True, indent=4)
+
+@dataclass(frozen=True, order=True)
+class TokenData:
+    userid: str
+    timestamp: int
+    name: str

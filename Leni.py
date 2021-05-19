@@ -2,6 +2,7 @@ import os
 from src.modules.Module import Module
 from src.modules.ModuleController import ModuleController
 from src.user.UserManager import  UserManager
+from src.tokens.TokenManager import *
 from flask import Flask, Request, jsonify, render_template, request
 from  src.ai.AI import Training
 from src.user.User import User
@@ -13,10 +14,6 @@ app = Flask(__name__)
 
 with open("./config.json", "r") as f:
     cfg = json.loads(f.read())
-
-with open(cfg['token_file'], "r+") as token_file:
-    tokens = json.loads(token_file.read())
-
 
 HOST=cfg['host']
 PORT=cfg['port']
@@ -53,23 +50,30 @@ userManager = UserManager("./data/")
 
 users = userManager.get_users()
 
-for i in tokens:
-    print(tokens[i])
-    if userManager.user_exists(tokens[i]['user']):
-        userManager.get_user(tokens[i]['user']).add_token(i)
+ # init and load tokens 
 
+tokenManager = TokenManager(cfg['token_file'])
+tokenManager.loadTokens()
+
+tmp = None
+for tokendata in tokenManager.tokens:
+    tmpUser = userManager.get_user(tokendata.userid)
+    tmpUser.add_token(tokendata.name)
 for user in users:
     for module in mc.modules:
         user.copy_config(module.module_name, module.getConfig())
+
+
+
+
 
 
 def check_for_token(param):
     if param == None:
         return False
     
-    for token in tokens:
-        if token == param['key']:
-            return True
+    if tokenManager.__contains__(param['key']) and  tokenManager.getTokenById(param['key']):
+        return True
     return False
 
 
