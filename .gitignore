@@ -67,10 +67,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-modules/*
-modules/
 
-data/*
 # C extensions
 *.so
 
@@ -232,4 +229,9 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/python,git,windows,macos,linux
+
+modules/*
+data/*
+
 DATA.pth
+tokens.json
