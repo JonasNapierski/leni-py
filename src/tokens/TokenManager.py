@@ -1,64 +1,73 @@
 import datetime
 from uuid import  uuid4
 import json
+from dataclasses import dataclass
 
 class TokenManager():
     
     path= ""
-
+    tokens= []
     def __init__(self, path):
         self.path = path
         self.tokens = []
-
-    def getToken(self, tokenid):
-        pass
     
+    def getTokenByUser(self, userid):
+        for t in self.tokens:
+            if t.userid == userid:
+                return t
+
+    def getTokenById(self, tokenid):
+        for t in self.tokens:
+            if t.name == tokenid:
+                return t
+
     def  saveTokens(self):
         with open(self.path, "w") as f:
-            f.write(json.dumps(self.tokens).toString())
+            a = []
+            for t in self.tokens:
+                temp = { "userid":  t.userid, "timestamp": t.timestamp, "name": t.name}
+
+                a.append(json.dumps(temp))
+
+            f.write(json.dumps(a))
 
     def create(self, userid ,activetime ):
         tk = Token()
         tk.create(userid,  datetime.datetime.now().timestamp() + activetime)
         
-        self.tokens.append(tk)
+        self.tokens.append(tk.tokenData)
 
         return tk
 
     def getTokens(self):
         return self.tokens
 
+@dataclass(frozen=True, order=True)
+
+class TokenData:
+    userid: str
+    timestamp: int
+    name: str
 
 class Token():
 
-    userid=""
-    timestamp=None
-    
-    name=""
+    tokenData = None
 
-    def __init__(self):
-        pass
+    def __init__(self, tokenData=None):
+        self.tokenData = tokenData
 
     def create(self, userid, expires):
-        self.userid = userid
-        self.name = uuid4().__str__()
-        self.timestamp = datetime.datetime.fromtimestamp(expires).isoformat()
+        """
+        userid: str ; ID of the User
+        expires: int; time added from current time in seconds
+        """
+        self.tokenData = TokenData(userid, datetime.datetime.fromtimestamp(expires).isoformat(), uuid4().__str__())
 
     def isActive(self):
-        if datetime.datetime.now().timestamp() <= datetime.datetime.fromisoformat(self.timestamp).timestamp():
+        if datetime.datetime.now().timestamp() <= datetime.datetime.fromisoformat(self.tokenData.timestamp).timestamp():
             return True
         return False
 
     def toJSON(self):
         return json.dumps(self, default=lambda o: o.__dict__, 
             sort_keys=True, indent=4)
-
-
-
-tm = TokenManager("./tokens.josn")
-tk =tm.create("uuuu-uuuuu-uuuuu-uuuu", -60*10)
-print(tk.toJSON())
-
-tm.saveTokens()
-for m in tm.tokens:
-    print(m.isActive())
