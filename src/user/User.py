@@ -1,16 +1,18 @@
-import json 
+import json
+from json.decoder import JSONDecodeError 
 import uuid
 import os 
 from src.tokens.TokenManager import TokenData, Token 
 
 class User():
     path = ""
+    user_path = ""
     uuid= ""
     password_hash=""
     tokens=[]
     displayname = ""
 
-    def __init__(self, path):
+    def __init__(self, path="./data"):
         self.path = path 
 
     def gen_uuid(self):
@@ -21,6 +23,7 @@ class User():
         self.uuid = uuid
         self.password_hash = password_hash
         self.tokens = tokens
+        self.user_path = f"{self.path}config/{self.uuid}"
 
     def load(self, file):
         with open(file, "r") as f:
@@ -70,7 +73,13 @@ class User():
                 return tkData
         return None
             
-    def load_module_config(self, module_name):
+    def get_module_config(self, module_name):
+        try:
+            with open(f"{self.user_path}/{module_name}.json", "r") as f:
+                tmpConfig = json.loads(f.read())
+                return tmpConfig
+        except JSONDecodeError as e:
+            e.write(e)
         return 
 
     def check_uuid(self, uuid):
