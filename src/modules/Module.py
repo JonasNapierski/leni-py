@@ -12,6 +12,8 @@ class Module():
 
     request_pattern=[]
 
+
+    
     def __init__(self, module_name, module_path):
         self.module_name = module_name
         self.module_path = module_path
@@ -26,6 +28,12 @@ class Module():
     def getConfig(self):
        with open(f"{self.module_path}/module.json", "r") as file:
             return json.loads(file.read()) 
+            file.close()
+
+    def loadFromPathConfig(self, module_config_path):
+        with open(module_config_path, "r") as file:
+            return json.loads(file.read())
+            file.close()
 
     def loadModule(self):
         self.module = importlib.import_module(f"modules.{self.module_name}.{self.mainFileName}")
@@ -34,6 +42,6 @@ class Module():
         self.loadConfig()
         self.loadModule()
 
-    def exec(self, msg):
+    def exec(self, msg, user):
         importlib.reload(self.module)
-        return self.module.exec(msg)
+        return self.module.exec(msg, user)
