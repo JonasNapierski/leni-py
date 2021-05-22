@@ -1,12 +1,14 @@
 import json 
 import uuid
 import os 
+from src.tokens.TokenManager import TokenData, Token 
 
 class User():
     path = ""
     uuid= ""
     password_hash=""
     tokens=[]
+    displayname = ""
 
     def __init__(self, path):
         self.path = path 
@@ -59,6 +61,15 @@ class User():
 
     def set_tokens(self, tokens):
         self.tokens = tokens
+    
+    def get_active_token(self):
+        for tkData in self.tokens:
+            print(tkData)
+            tk = Token(tkData)
+            if tk.isActive():
+                return tkData
+        return None
+            
     def load_module_config(self, module_name):
         return 
 

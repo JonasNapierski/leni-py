@@ -57,8 +57,9 @@ tokenManager.loadTokens()
 
 tmp = None
 for tokendata in tokenManager.tokens:
-    tmpUser = userManager.get_user(tokendata.userid)
-    tmpUser.add_token(tokendata.name)
+    print(f"Add {tokendata.name} to {tokendata.userid}")
+    userManager.add_token(tokendata.userid, tokendata)
+
 for user in users:
     for module in mc.modules:
         user.copy_config(module.module_name, module.getConfig())
@@ -72,7 +73,7 @@ def check_for_token(param):
     if param == None:
         return False
     
-    if tokenManager.__contains__(param['key']) and  tokenManager.getTokenById(param['key']):
+    if tokenManager.__contains__(param['key']) and  Token(tokenManager.getTokenById(param['key'])).isActive():
         return True
     return False
 
@@ -81,6 +82,23 @@ def check_for_token(param):
 def index():
     return render_template("index.html")
     
+
+@app.route("/login", methods=["POST"])
+def login_route():
+    body = request.json
+
+    if body == None:
+        return
+
+    user = userManager.get_user_by_name(body['username'])
+    if user != None and user.check_password(body['password']):
+        tmpData = Token(user.get_active_token())
+        if tmpData.tokenData == None:
+            tmpData = tokenManager.create(user.uuid, 60*24)
+            userManager.add_token(body['username'], tmpData)
+            tokenManager.saveTokens()
+        return jsonify({"token": tmpData.tokenData.name})
+    return {"MSG":"NO VALID USER INFORMATION", "COD": 400}
 
 @app.route("/api/modules", methods=['GET'])
 def list_all_module():
@@ -119,14 +137,13 @@ def process():
     for m in mc.modules:
         
         if str(m.module_name) == str(module):
-            
-            
-
             if request.is_json:
-                user = userManager.get_user_by_token(request.args['key'])
+                user = userManager.get_user(tokenManager.getTokenById(request.args['key']).userid)
+                if user == None:
+                    return jsonify("USER NOT FOUND BY TOKEN")
                 return jsonify(m.exec(msg, user))
     return jsonify(data)
 
 
 if __name__ == "__main__":
-    app.run(host=HOST, port=PORT, debug=True)
+    app.run(host=HOST, port=PORT, debug=False)

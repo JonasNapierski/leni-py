@@ -40,6 +40,7 @@ class TokenManager():
                 a.append(temp)
 
             f.write(json.dumps(a))
+            self.loadTokens()
 
     def create(self, userid ,activetime ):
         tk = Token()
@@ -77,7 +78,10 @@ class Token():
         self.tokenData = TokenData(userid, datetime.datetime.fromtimestamp(expires).isoformat(), uuid4().__str__())
 
     def isActive(self):
-        if datetime.datetime.now().timestamp() <= datetime.datetime.fromisoformat(self.tokenData.timestamp).timestamp():
+        if TokenData == None or self.tokenData.timestamp == None:
+            return False
+        print(self.tokenData)
+        if datetime.datetime.now().timestamp() < datetime.datetime.fromisoformat(self.tokenData.timestamp).timestamp():
             return True
         return False
 

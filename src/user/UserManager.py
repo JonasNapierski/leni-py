@@ -37,8 +37,20 @@ class UserManager():
             if u.check_for_token(token):
                 return u
 
+    def add_token(self, uuid, token):
+        for user in self.users:
+            if user.check_uuid(uuid):
+                user.add_token(token)
+
     def get_user(self, uuid):
         for user in self.users:
             if user.check_uuid(uuid):
                 return user
+        return None 
+    
+    def get_user_by_name(self, displayname):
+        for user in self.users:
+            if user.displayname == displayname:
+                return user
+
         return None 
