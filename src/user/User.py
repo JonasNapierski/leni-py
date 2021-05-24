@@ -3,6 +3,7 @@ from json.decoder import JSONDecodeError
 import uuid
 import os 
 from src.tokens.TokenManager import TokenData, Token 
+from src.Debugger import Debug
 
 class User():
     path = ""
@@ -43,7 +44,7 @@ class User():
 
     def copy_config(self, module_name, module_config, path="./data/"):
         if  os.path.exists(f"{path}config/{self.uuid}/{module_name}.json"):
-            print(f"{path}config/{self.uuid}/{module_name}.json File already exists")
+            Debug.print(f"{path}config/{self.uuid}/{module_name}.json File already exists")
             return
         if not os.path.exists(f"{path}config/{self.uuid}"):
             os.makedirs(f"{path}config/{self.uuid}")
@@ -67,7 +68,6 @@ class User():
     
     def get_active_token(self):
         for tkData in self.tokens:
-            print(tkData)
             tk = Token(tkData)
             if tk.isActive():
                 return tkData
