@@ -13,7 +13,6 @@ class UserManager():
             return
         self.path = path
 
-        print("user data base found!")
         files = glob(f"{path}/users/*")
 
         for f in files:
