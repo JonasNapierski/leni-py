@@ -19,7 +19,7 @@ $ cd leni-py
 
 Step 3: Install all requirements using:
 ```
-$ cd pip install -r requirements.txt
+$ pip install -r requirements.txt
 ```
 
 # Module
