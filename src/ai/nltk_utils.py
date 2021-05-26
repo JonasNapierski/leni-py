@@ -1,9 +1,11 @@
 import numpy as np
 import nltk
 from nltk.stem.porter import PorterStemmer
+from src.Debugger import Debug
 
 try:
     nltk.data.find('tokenizers/punkt')
+    Debug.print("tokenizers/punkt init")
 except LookupError:
     nltk.download('punkt')
 

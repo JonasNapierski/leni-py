@@ -27,7 +27,6 @@ class TokenManager():
             json_ = json.loads(f.read())
             
             for object in json_:
-                print(object)
                 tkData = TokenData(object["userid"], object["timestamp"], object["name"])
                 self.tokens.append(tkData)
  
