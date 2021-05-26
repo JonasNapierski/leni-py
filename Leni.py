@@ -103,7 +103,7 @@ def list_module(module):
     if not check_for_token(request.args):
         return jsonify("INVALID API KEY")
 
-    print(module)
+
     for m in mc.modules:
         if m.module_name == str(module):
             return jsonify(m.exec(""))
