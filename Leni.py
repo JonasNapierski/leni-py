@@ -4,11 +4,15 @@ from src.modules.ModuleController import ModuleController
 from src.user.UserManager import  UserManager
 from src.tokens.TokenManager import *
 from src.Debugger import Debug
+from src.AdminConsole import AdminConsole
 from flask import Flask, Request, jsonify, render_template, request
 from  src.ai.AI import Training
 from src.user.User import User
 import json
 import requests
+from multiprocessing import Process
+from threading import Thread
+
 
 app = Flask(__name__)
 
@@ -133,5 +137,16 @@ def process():
     return jsonify(data)
 
 
-if __name__ == "__main__":
+def run_flask():
     app.run(host=HOST, port=PORT, debug=False)
+
+def run_admin():
+    adminConsole = AdminConsole()
+    adminConsole.run()
+
+
+if __name__ == "__main__":
+   #flaskProcess = Process(target=run_flask)
+   #flaskProcess.start()
+   adminProcess = Process(target=run_admin)
+   adminProcess.start()
