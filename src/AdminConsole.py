@@ -1,13 +1,29 @@
 from threading import Thread
 import sys
+import importlib
 import os
 from src.Debugger import Debug
+from src.tokens.TokenManager import TokenManager
+from src.user.UserManager import UserManager
+
+from src.commands import UserCommand
+
+
+register_commands = {
+    "user": UserCommand
+}
 
 class AdminConsole():
     isRunning = False
+    userManager = None 
+    tokenManager = None
 
-    def __init__(self):
-        pass
+    def init_commands(self):
+        uc.usManager = self.userManager
+
+    def __init__(self, userManager, tokenManager):
+        self.userManager = userManager
+        self.tokenManager = tokenManager
 
     def run(self):
         Debug.print("run AdminConsole thread")
@@ -26,4 +42,11 @@ class AdminConsole():
             if c == "exit":
                 self.isRunning = False
                 Debug.print("Admin-Console closed!")
-            Debug.print(c)
+
+            args = c.split(" ")
+            
+            for cmd in register_commands:
+                if args[0] == cmd:
+                    importlib.reload(register_commands[cmd])
+                    register_commands[cmd].command(c, args)
+            

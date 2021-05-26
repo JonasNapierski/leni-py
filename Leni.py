@@ -142,9 +142,10 @@ def run_flask():
     app.run(host=HOST, port=PORT, debug=False)
 
 def run_admin():
-    adminConsole = AdminConsole()
+    adminConsole = AdminConsole(userManager, tokenManager)
     adminConsole.run()
     adminConsole.input_loop()
+
 
 
 if __name__ == "__main__":
@@ -152,3 +153,5 @@ if __name__ == "__main__":
    adminProcess = Process(target=run_admin)
    flaskProcess.start()
    adminProcess.start()
+
+   

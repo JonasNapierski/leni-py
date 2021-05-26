@@ -4,6 +4,7 @@ import uuid
 import os 
 from src.tokens.TokenManager import TokenData, Token 
 from src.Debugger import Debug
+import hashlib
 
 class User():
     path = ""
@@ -32,9 +33,9 @@ class User():
             self.create(data["displayname"], data["uuid"], data["password_hash"], [])
 
     
-    def save_profile(self, path):
+    def save_profile(self, path="./data"):
         json_data = self.toJSON()
-        
+        Debug.print(f"{path}/users/{self.uuid} save user")
         f = open(f"{path}/users/{self.uuid}.json", "w")
         f.write(json_data)
         f.close()
@@ -91,6 +92,9 @@ class User():
         if raw_hash == self.password_hash:
             return True
         return False
+
+    def hash_password(self, raw_pass):
+        return hashlib.md5(f"{raw_pass}".encode())
 
     def toJSON(self):
         return json.dumps(self, default=lambda o: o.__dict__, 
