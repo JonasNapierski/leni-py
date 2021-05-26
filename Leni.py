@@ -1,4 +1,5 @@
 import os 
+import sys
 from src.modules.Module import Module
 from src.modules.ModuleController import ModuleController
 from src.user.UserManager import  UserManager
@@ -143,10 +144,11 @@ def run_flask():
 def run_admin():
     adminConsole = AdminConsole()
     adminConsole.run()
+    adminConsole.input_loop()
 
 
 if __name__ == "__main__":
-   #flaskProcess = Process(target=run_flask)
-   #flaskProcess.start()
+   flaskProcess = Process(target=run_flask)
    adminProcess = Process(target=run_admin)
+   flaskProcess.start()
    adminProcess.start()

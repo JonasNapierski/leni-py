@@ -19,4 +19,11 @@ class AdminConsole():
             return
         
         while self.isRunning:
-            Debug.print(sys.stdin)
+            sys.stdin = open(0)
+            c = sys.stdin.readline().strip("\n\r")
+
+
+            if c == "exit":
+                self.isRunning = False
+                Debug.print("Admin-Console closed!")
+            Debug.print(c)
