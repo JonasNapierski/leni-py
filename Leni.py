@@ -92,7 +92,7 @@ def login_route():
 @app.route("/api/modules", methods=['GET'])
 def list_all_module():
     if check_for_token(request.args):
-        return jsonify("INVALID API KEY")
+        return jsonify({"msg":"INVALID LOGIN TOKEN", "cod": 401})
 
     mm = []
 
@@ -106,7 +106,8 @@ def list_all_module():
 @app.route("/api/module/<module>", methods=['GET'])
 def list_module(module):
     if not check_for_token(request.args):
-        return jsonify("INVALID API KEY")
+        return jsonify({"msg":"INVALID LOGIN TOKEN", "cod": 401})
+        
 
 
     for m in mc.modules:
@@ -118,7 +119,8 @@ def list_module(module):
 @app.route("/api/process", methods=["POST"])
 def process():
     if not check_for_token(request.args):
-        return jsonify("INVALID API KEY")
+        return jsonify({"msg":"INVALID LOGIN TOKEN", "cod": 401})
+        
 
     data = request.json
     msg = data['msg']
