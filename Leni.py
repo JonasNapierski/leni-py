@@ -76,10 +76,10 @@ def login_route():
 
     if body == None:
         return
-
+    userManager.load_users()
     user = userManager.get_user_by_name(body['username'])
     if user != None and user.check_password(body['password']):
-        tmpData = Token(user.get_active_token())
+        tmpData = Token(tokenManager.getTokenByUser(user.uuid))
         if tmpData.tokenData == None:
             tmpData = tokenManager.create(user.uuid, 60*60*24)
             userManager.add_token(body['username'], tmpData.tokenData)
