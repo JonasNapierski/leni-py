@@ -6,11 +6,10 @@ from src.user.UserManager import  UserManager
 from src.tokens.TokenManager import *
 from src.Debugger import Debug
 from src.AdminConsole import AdminConsole
-from flask import Flask, Request, jsonify, render_template, request
+from flask import Flask,  jsonify, render_template, request
 from  src.ai.AI import Training
 from src.user.User import User
 import json
-import requests
 from multiprocessing import Process
 from threading import Thread
 
@@ -81,9 +80,10 @@ def login_route():
     if user != None and user.check_password(body['password']):
         tmpData = Token(user.get_active_token())
         if tmpData.tokenData == None:
-            tmpData = tokenManager.create(user.uuid, 60*24)
+            tmpData = tokenManager.create(user.uuid, 60*60*24)
             userManager.add_token(body['username'], tmpData)
             tokenManager.saveTokens()
+            tokenManager.loadTokens()
         return jsonify({"token": tmpData.tokenData.name})
     return {"MSG":"NO VALID USER INFORMATION", "COD": 400}
 

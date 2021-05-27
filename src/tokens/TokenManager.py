@@ -35,15 +35,16 @@ class TokenManager():
             except JSONDecodeError as e:
                 pass
     def  saveTokens(self):
+        a = []
+        for t in self.tokens:
+            temp = { "userid":  t.userid, "timestamp": t.timestamp, "name": t.name}
+            a.append(temp)
+
         with open(self.path, "w") as f:
-            a = []
-            for t in self.tokens:
-                temp = { "userid":  t.userid, "timestamp": t.timestamp, "name": t.name}
-
-                a.append(temp)
-
             f.write(json.dumps(a))
-            self.loadTokens()
+            f.close()
+
+        self.loadTokens()
 
     def create(self, userid ,activetime ):
         tk = Token()
