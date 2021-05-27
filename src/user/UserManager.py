@@ -13,15 +13,16 @@ class UserManager():
             return
         self.path = path
 
-        print("user data base found!")
-        files = glob(f"{path}/users/*")
+        self.load_users()
+               
+    def load_users(self):
+        files = glob(f"{self.path}/users/*")
 
         for f in files:
            
-            u = User(path)
+            u = User(self.path)
             u.load(f)
-            self.users.append(u)       
-
+            self.users.append(u)
 
     def get_users(self):
         return self.users

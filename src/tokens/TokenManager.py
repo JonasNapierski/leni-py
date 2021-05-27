@@ -83,7 +83,7 @@ class Token():
     def isActive(self):
         if TokenData == None or self.tokenData.timestamp == None:
             return False
-        print(self.tokenData)
+            
         if datetime.datetime.now().timestamp() < datetime.datetime.fromisoformat(self.tokenData.timestamp).timestamp():
             return True
         return False

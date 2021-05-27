@@ -3,6 +3,8 @@ from json.decoder import JSONDecodeError
 import uuid
 import os 
 from src.tokens.TokenManager import TokenData, Token 
+from src.Debugger import Debug
+import hashlib
 
 class User():
     path = ""
@@ -31,9 +33,9 @@ class User():
             self.create(data["displayname"], data["uuid"], data["password_hash"], [])
 
     
-    def save_profile(self, path):
+    def save_profile(self, path="./data"):
         json_data = self.toJSON()
-        
+        Debug.print(f"{path}/users/{self.uuid} save user")
         f = open(f"{path}/users/{self.uuid}.json", "w")
         f.write(json_data)
         f.close()
@@ -43,7 +45,7 @@ class User():
 
     def copy_config(self, module_name, module_config, path="./data/"):
         if  os.path.exists(f"{path}config/{self.uuid}/{module_name}.json"):
-            print(f"{path}config/{self.uuid}/{module_name}.json File already exists")
+            Debug.print(f"{path}config/{self.uuid}/{module_name}.json File already exists")
             return
         if not os.path.exists(f"{path}config/{self.uuid}"):
             os.makedirs(f"{path}config/{self.uuid}")
@@ -67,7 +69,6 @@ class User():
     
     def get_active_token(self):
         for tkData in self.tokens:
-            print(tkData)
             tk = Token(tkData)
             if tk.isActive():
                 return tkData
@@ -91,6 +92,9 @@ class User():
         if raw_hash == self.password_hash:
             return True
         return False
+
+    def hash_password(self, raw_pass):
+        return hashlib.md5(f"{raw_pass}".encode())
 
     def toJSON(self):
         return json.dumps(self, default=lambda o: o.__dict__, 
