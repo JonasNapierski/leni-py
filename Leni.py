@@ -1,14 +1,19 @@
 import os 
+import sys
 from src.modules.Module import Module
 from src.modules.ModuleController import ModuleController
 from src.user.UserManager import  UserManager
 from src.tokens.TokenManager import *
 from src.Debugger import Debug
+from src.AdminConsole import AdminConsole
 from flask import Flask, Request, jsonify, render_template, request
 from  src.ai.AI import Training
 from src.user.User import User
 import json
 import requests
+from multiprocessing import Process
+from threading import Thread
+
 
 app = Flask(__name__)
 
@@ -103,7 +108,7 @@ def list_module(module):
     if not check_for_token(request.args):
         return jsonify("INVALID API KEY")
 
-    print(module)
+
     for m in mc.modules:
         if m.module_name == str(module):
             return jsonify(m.exec(""))
@@ -133,5 +138,20 @@ def process():
     return jsonify(data)
 
 
-if __name__ == "__main__":
+def run_flask():
     app.run(host=HOST, port=PORT, debug=False)
+
+def run_admin():
+    adminConsole = AdminConsole(userManager, tokenManager)
+    adminConsole.run()
+    adminConsole.input_loop()
+
+
+
+if __name__ == "__main__":
+   flaskProcess = Process(target=run_flask)
+   adminProcess = Process(target=run_admin)
+   flaskProcess.start()
+   adminProcess.start()
+
+   
