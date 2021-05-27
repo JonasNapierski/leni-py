@@ -9,21 +9,27 @@ from src.user.UserManager import UserManager
 from src.commands import UserCommand
 
 
-register_commands = {
-    "user": UserCommand
-}
+
 
 class AdminConsole():
     isRunning = False
     userManager = None 
     tokenManager = None
+    register_commands = {}
 
     def init_commands(self):
+        uc = UserCommand
         uc.usManager = self.userManager
+
+        self.register_commands = {
+            "user": uc
+        }
 
     def __init__(self, userManager, tokenManager):
         self.userManager = userManager
         self.tokenManager = tokenManager
+        
+        self.init_commands()
 
     def run(self):
         Debug.print("run AdminConsole thread")
@@ -36,7 +42,7 @@ class AdminConsole():
         
         while self.isRunning:
             sys.stdin = open(0)
-            c = sys.stdin.readline().strip("\n\r")
+            c = sys.stdin.readline().strip()
 
 
             if c == "exit":
@@ -45,8 +51,8 @@ class AdminConsole():
 
             args = c.split(" ")
             
-            for cmd in register_commands:
+            for cmd in self.register_commands:
                 if args[0] == cmd:
-                    importlib.reload(register_commands[cmd])
-                    register_commands[cmd].command(c, args)
+                    importlib.reload(self.register_commands[cmd])
+                    self.register_commands[cmd].command(c, args)
             
