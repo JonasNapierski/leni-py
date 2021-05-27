@@ -235,4 +235,5 @@ modules/*
 data/*
 
 DATA.pth
+./tokens.json
 tokens.json
