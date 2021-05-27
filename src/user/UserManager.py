@@ -16,6 +16,7 @@ class UserManager():
         self.load_users()
                
     def load_users(self):
+        self.users = []
         files = glob(f"{self.path}/users/*")
 
         for f in files:
