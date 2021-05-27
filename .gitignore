@@ -235,5 +235,8 @@ modules/*
 data/*
 
 DATA.pth
+
+.vscode/
+
 ./tokens.json
 tokens.json
