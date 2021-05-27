@@ -18,8 +18,7 @@ class AdminConsole():
     register_commands = {}
 
     def init_commands(self):
-        uc = UserCommand
-        uc.usManager = self.userManager
+        uc = UserCommand.UserCommand(self.userManager)
 
         self.register_commands = {
             "user": uc
@@ -53,6 +52,8 @@ class AdminConsole():
             
             for cmd in self.register_commands:
                 if args[0] == cmd:
-                    importlib.reload(self.register_commands[cmd])
-                    self.register_commands[cmd].command(c, args)
-            
+                    #importlib.reload(self.register_commands[cmd])
+                    try:
+                        self.register_commands[cmd].command(c, args)
+                    except:
+                        Debug.print(f"{cmd} failed!")
