@@ -24,16 +24,22 @@ class TokenManager():
     
     def loadTokens(self):
         self.tokens = []
-        with open(self.path, "r") as f:
-            try:
-                json_ = json.loads(f.read())
+        try:
+            with open(self.path, "r") as f:
+                try:
+                    json_ = json.loads(f.read())
+                    
+                    for object in json_:
+                        print(object)
+                        tkData = TokenData(object["userid"], object["timestamp"], object["name"])
+                        self.tokens.append(tkData)
+                except JSONDecodeError as e:
+                    pass
+        except:
+            with open(self.path, "w") as f:
+                f.write()
+                f.close()
                 
-                for object in json_:
-                    print(object)
-                    tkData = TokenData(object["userid"], object["timestamp"], object["name"])
-                    self.tokens.append(tkData)
-            except JSONDecodeError as e:
-                pass
     def  saveTokens(self):
         with open(self.path, "w") as f:
             a = []

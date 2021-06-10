@@ -15,6 +15,7 @@ from multiprocessing import Process
 from threading import Thread
 
 
+# init flask
 app = Flask(__name__)
 
 with open("./config.json", "r") as f:
