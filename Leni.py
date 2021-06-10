@@ -42,17 +42,21 @@ userManager = UserManager("./data/")
 
 # init and load tokens 
 tokenManager = TokenManager(cfg['token_file'])
-tokenManager.loadTokens()
 
-tmp = None
-for tokendata in tokenManager.tokens:
-    Debug.print(f"Add Token: [{tokendata.name}] to user [{tokendata.userid}]")
-    userManager.add_token(tokendata.userid, tokendata)
 
-for user in userManager.get_users():
-    for module in mc.modules:
-        user.copy_config(module.module_name, module.getConfig())
+def load_tokens():
+    tokenManager.loadTokens()
+    for tokendata in tokenManager.tokens:
+        Debug.print(f"Add Token: [{tokendata.name}] to user [{tokendata.userid}]")
+        userManager.add_token(tokendata.userid, tokendata)
 
+def create_user_modules():
+    for user in userManager.get_users():
+        for module in mc.modules:
+            user.copy_config(module.module_name, module.getConfig())
+
+load_tokens()
+create_user_modules()
 
 # check if the token is active and valid; will return True or False
 def check_for_token(param):
@@ -85,6 +89,7 @@ def login_route():
             tmpData = tokenManager.create(user.uuid, 60*24)
             userManager.add_token(body['username'], tmpData)
             tokenManager.saveTokens()
+            load_tokens()
         return jsonify({"token": tmpData.tokenData.name})
     return {"MSG":"NO VALID USER INFORMATION", "COD": 400}
 
