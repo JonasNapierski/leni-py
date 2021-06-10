@@ -29,25 +29,29 @@ class TokenManager():
                 json_ = json.loads(f.read())
                 
                 for object in json_:
-                    print(object)
                     tkData = TokenData(object["userid"], object["timestamp"], object["name"])
                     self.tokens.append(tkData)
             except JSONDecodeError as e:
                 pass
+
     def  saveTokens(self):
+        a = []
+        for t in self.tokens:
+            temp = { "userid":  t.userid, "timestamp": t.timestamp, "name": t.name}
+            a.append(temp)
+
         with open(self.path, "w") as f:
-            a = []
-            for t in self.tokens:
-                temp = { "userid":  t.userid, "timestamp": t.timestamp, "name": t.name}
-
-                a.append(temp)
-
             f.write(json.dumps(a))
-            self.loadTokens()
+            f.close()
+
+        self.loadTokens()
 
     def create(self, userid ,activetime ):
         tk = Token()
-        tk.create(userid,  datetime.datetime.now().timestamp() + activetime)
+
+        cTime = datetime.datetime.now()
+        newTime = cTime + datetime.timedelta(days=30)
+        tk.create(userid,  newTime.timestamp())
         
         self.tokens.append(tk.tokenData)
 
@@ -78,13 +82,13 @@ class Token():
         userid: str ; ID of the User
         expires: int; time added from current time in seconds
         """
-        self.tokenData = TokenData(userid, datetime.datetime.fromtimestamp(expires).isoformat(), uuid4().__str__())
+        self.tokenData = TokenData(userid, expires, uuid4().__str__())
 
     def isActive(self):
         if TokenData == None or self.tokenData.timestamp == None:
             return False
-            
-        if datetime.datetime.now().timestamp() < datetime.datetime.fromisoformat(self.tokenData.timestamp).timestamp():
+        print(f"{datetime.datetime.now().timestamp()} { self.tokenData.timestamp}")
+        if datetime.datetime.now().timestamp() < self.tokenData.timestamp:
             return True
         return False
 
