@@ -37,9 +37,9 @@ class TokenManager():
                     pass
         except:
             with open(self.path, "w") as f:
-                f.write()
+                f.write("{}")
                 f.close()
-                
+
     def  saveTokens(self):
         with open(self.path, "w") as f:
             a = []
