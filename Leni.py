@@ -6,11 +6,10 @@ from src.user.UserManager import  UserManager
 from src.tokens.TokenManager import *
 from src.Debugger import Debug
 from src.AdminConsole import AdminConsole
-from flask import Flask, Request, jsonify, render_template, request
+from flask import Flask,  jsonify, render_template, request
 from  src.ai.AI import Training
 from src.user.User import User
 import json
-import requests
 from multiprocessing import Process
 from threading import Thread
 
@@ -81,13 +80,13 @@ def login_route():
 
     if body == None:
         return
-
+    userManager.load_users()
     user = userManager.get_user_by_name(body['username'])
     if user != None and user.check_password(body['password']):
-        tmpData = Token(user.get_active_token())
+        tmpData = Token(tokenManager.getTokenByUser(user.uuid))
         if tmpData.tokenData == None:
-            tmpData = tokenManager.create(user.uuid, 60*24)
-            userManager.add_token(body['username'], tmpData)
+            tmpData = tokenManager.create(user.uuid, 60*60*24)
+            userManager.add_token(body['username'], tmpData.tokenData)
             tokenManager.saveTokens()
             load_tokens()
         return jsonify({"token": tmpData.tokenData.name})
