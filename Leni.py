@@ -34,6 +34,9 @@ for m in mc.modules:
     mcfg = m.getConfig()
     bot.add(mcfg[cfg['language']], m.module_name)
 
+#bot.create_set()
+#bot.train(num_epochs=5000, batch_size=8, learning_rate=0.001, hidden_size=8, num_workers=0, FILE_PATH="DATA.pth")
+
 bot.load(FILE_PATH="DATA.pth")
 
 # init user-manager
@@ -135,12 +138,14 @@ def process():
     Debug.print(f"{module}:{weight:.4f}")
 
     for m in mc.modules:
-        
         if str(m.module_name) == str(module):
             if request.is_json:
                 user = userManager.get_user(tokenManager.getTokenById(request.args['key']).userid)
                 if user == None:
                     return jsonify("USER NOT FOUND BY TOKEN")
+                
+                if not os.path.exists(f"/data/config/{user.uuid}"):
+                    create_user_modules()
                 return jsonify(m.exec(msg, user))
     return jsonify(data)
 

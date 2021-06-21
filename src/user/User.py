@@ -16,7 +16,7 @@ class User():
 
     def __init__(self, path="./data"):
         self.path = path 
-
+        
     def gen_uuid(self):
         return uuid.uuid4().__str__()
 
