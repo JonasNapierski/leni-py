@@ -18,12 +18,15 @@ class ModuleController():
                 -> in the folder must be a module.json file!
                 -> there is a main file which is register in the module.json
         """
+        if not os.path.exists(module_path):
+            os.makedirs(module_path)
         self.module_path = module_path
     
     def find_all_files(self):
         """
         List all directories in the Modules-folder and add them to the 'module_names'
         """
+        self.module_names = []
         self.module_names = glob(f"{self.module_path}/*")
 
         for i in range(0, len(self.module_names)):
@@ -31,7 +34,7 @@ class ModuleController():
         return self.module_names
 
     def load_all_module(self) -> None:
-        if self.module_names == None :
+        if self.module_names == None:
             self.find_all_files()
 
         for name in self.module_names:

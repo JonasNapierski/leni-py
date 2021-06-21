@@ -26,13 +26,15 @@ PORT=cfg['port']
 # init bot and Module-Controller and feed the modules into the ai
 bot = Training()
 mc = ModuleController("./modules")
-mc.module_names = []
 mc.find_all_files()
 mc.load_all_module()
 
 for m in mc.modules:
     mcfg = m.getConfig()
     bot.add(mcfg[cfg['language']], m.module_name)
+
+#bot.create_set()
+#bot.train(num_epochs=5000, batch_size=8, learning_rate=0.001, hidden_size=8, num_workers=0, FILE_PATH="DATA.pth")
 
 bot.load(FILE_PATH="DATA.pth")
 
@@ -96,6 +98,10 @@ def login_route():
 # api/modules route -- get a list of all modules 
 @app.route("/api/modules", methods=['GET'])
 def list_all_module():
+
+    mc.load_all_module()
+    create_user_modules()
+
     if check_for_token(request.args):
         return jsonify({"msg":"INVALID LOGIN TOKEN", "cod": 401})
 
@@ -135,12 +141,14 @@ def process():
     Debug.print(f"{module}:{weight:.4f}")
 
     for m in mc.modules:
-        
         if str(m.module_name) == str(module):
             if request.is_json:
                 user = userManager.get_user(tokenManager.getTokenById(request.args['key']).userid)
                 if user == None:
                     return jsonify("USER NOT FOUND BY TOKEN")
+                
+                if not os.path.exists(f"/data/config/{user.uuid}"):
+                    create_user_modules()
                 return jsonify(m.exec(msg, user))
     return jsonify(data)
 

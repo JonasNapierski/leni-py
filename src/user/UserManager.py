@@ -9,9 +9,11 @@ class UserManager():
 
 
     def __init__(self, path):
-        if not os.path.exists(path):
-            return
+        if not os.path.exists(f"{path}/users"):
+            os.makedirs(f"{path}/users")
+            
         self.path = path
+
 
         self.load_users()
                
