@@ -26,7 +26,6 @@ PORT=cfg['port']
 # init bot and Module-Controller and feed the modules into the ai
 bot = Training()
 mc = ModuleController("./modules")
-mc.module_names = []
 mc.find_all_files()
 mc.load_all_module()
 
@@ -99,6 +98,10 @@ def login_route():
 # api/modules route -- get a list of all modules 
 @app.route("/api/modules", methods=['GET'])
 def list_all_module():
+
+    mc.load_all_module()
+    create_user_modules()
+
     if check_for_token(request.args):
         return jsonify({"msg":"INVALID LOGIN TOKEN", "cod": 401})
 
