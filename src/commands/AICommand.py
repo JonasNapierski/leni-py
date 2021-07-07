@@ -21,7 +21,14 @@ class AICommand():
         
         elif args[1] == "reload":
             self.bot.load(FILE_PATH="DATA.pth")
-            Debug.print("AI reloaded")
+            Debug.print("AI-CMD: reloaded")
+
+        elif args[1] == "save" and len(args) == 3:
+            try:
+                self.bot.save(args[3])
+                Debug.print(f"AI-CMD: AI saved to {args[3]}")
+            except:
+                Debug.print("AI-CMD: Saving file failed!")
         else:
-            Debug.print("AI print | Print the current Dataset")
-            Debug.print("AI train [language] | trains the  AI on the language")
+            Debug.print("AI-CMD: AI print | Print the current Dataset")
+            Debug.print("AI-CMD: AI train [language] | trains the  AI on the language")
