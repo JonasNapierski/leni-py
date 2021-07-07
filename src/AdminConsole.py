@@ -2,11 +2,13 @@ from threading import Thread
 import sys
 import importlib
 import os
+from src.commands.AICommand import AICommand
+from src.commands.UserCommand import UserCommand
 from src.Debugger import Debug
 from src.tokens.TokenManager import TokenManager
 from src.user.UserManager import UserManager
 
-from src.commands import UserCommand
+
 
 
 
@@ -15,18 +17,25 @@ class AdminConsole():
     isRunning = False
     userManager = None 
     tokenManager = None
+    moduleManager = None
+
     register_commands = {}
 
     def init_commands(self):
-        uc = UserCommand.UserCommand(self.userManager)
+        uc = UserCommand(self.userManager)
+
+        ai_cmd = AICommand(self.bot, self.moduleManager)
 
         self.register_commands = {
-            "user": uc
+            "user": uc,
+            "ai": ai_cmd
         }
 
-    def __init__(self, userManager, tokenManager):
+    def __init__(self, userManager, tokenManager, bot, moduleManager):
         self.userManager = userManager
         self.tokenManager = tokenManager
+        self.moduleManager = moduleManager
+        self.bot = bot
         
         self.init_commands()
 
@@ -48,7 +57,7 @@ class AdminConsole():
                 self.isRunning = False
                 Debug.print("Admin-Console closed!")
 
-            args = c.split(" ")
+            args = c.split()
             
             for cmd in self.register_commands:
                 if args[0] == cmd:

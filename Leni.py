@@ -157,7 +157,7 @@ def run_flask():
     app.run(host=HOST, port=PORT, debug=False)
 
 def run_admin():
-    adminConsole = AdminConsole(userManager, tokenManager)
+    adminConsole = AdminConsole(userManager, tokenManager, bot, mc)
     adminConsole.run()
     adminConsole.input_loop()
 
