@@ -1,5 +1,5 @@
 from src.ai.AI import Training
-
+from src.Debugger import Debug
 
 class AICommand():
     def __init__(self, bot, moduleManager):
@@ -18,6 +18,10 @@ class AICommand():
 
             self.bot.create_set()
             self.bot.train(num_epochs=5000, batch_size=8, learning_rate=0.01, hidden_size=8, num_workers=0, FILE_PATH="DATA.pth")
+        
+        elif args[1] == "reload":
+            self.bot.load(FILE_PATH="DATA.pth")
+            Debug.print("AI reloaded")
         else:
-            print("ai print | Print the current Dataset")
-            print("ai train [language] | trains the  ai on the language")
+            Debug.print("AI print | Print the current Dataset")
+            Debug.print("AI train [language] | trains the  AI on the language")
