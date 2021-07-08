@@ -9,7 +9,6 @@ class AICommand():
 
     def command(self, msg, args):
         if len(args) > 1:
-            print(args, msg)
             if args[1] == "print":
                 self.bot.print()
 
@@ -28,7 +27,6 @@ class AICommand():
             elif args[1] == "save" and len(args) > 2:
                 
                 try:
-                    print(self.bot.data)
                     self.bot.save(self.bot.data, args[2])
                     Debug.print(f"AI-CMD: AI saved to {args[2]}")
                 except Exception as exp:
