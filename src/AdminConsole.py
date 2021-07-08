@@ -57,12 +57,17 @@ class AdminConsole():
                 self.isRunning = False
                 Debug.print("Admin-Console closed!")
 
+            if c == "":
+                return
             args = c.split()
             
-            for cmd in self.register_commands:
-                if args[0] == cmd:
-                    #importlib.reload(self.register_commands[cmd])
-                    try:
-                        self.register_commands[cmd].command(c, args)
-                    except Exception as exc:
-                        Debug.print(exc.message)
+            try:
+                for cmd in self.register_commands:
+                    if args[0] == cmd:
+                        #importlib.reload(self.register_commands[cmd])
+                        try:
+                            self.register_commands[cmd].command(c, args)
+                        except Exception as exc:
+                            Debug.print(exc.message)
+            except:
+                Debug.print(f"{c} is not a valid command")

@@ -8,7 +8,8 @@ class AICommand():
 
 
     def command(self, msg, args):
-        if len(args) < 1:
+        if len(args) > 1:
+            print(args, msg)
             if args[1] == "print":
                 self.bot.print()
 
@@ -24,11 +25,14 @@ class AICommand():
                 self.bot.load(FILE_PATH="DATA.pth")
                 Debug.print("AI-CMD: reloaded")
 
-            elif args[1] == "save" and len(args) == 3:
+            elif args[1] == "save" and len(args) > 2:
+                
                 try:
-                    self.bot.save(args[3])
-                    Debug.print(f"AI-CMD: AI saved to {args[3]}")
-                except:
+                    print(self.bot.data)
+                    self.bot.save(self.bot.data, args[2])
+                    Debug.print(f"AI-CMD: AI saved to {args[2]}")
+                except Exception as exp:
+                    Debug.print(exp)
                     Debug.print("AI-CMD: Saving file failed!")
         else:
             Debug.print("AI-CMD: AI print | Print the current Dataset")

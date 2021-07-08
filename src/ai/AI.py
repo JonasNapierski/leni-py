@@ -118,6 +118,12 @@ class Training():
         torch.save(self.data, FILE_PATH)
         return self.data
 
+    def save(self,data,  FILE_PATH=""):
+        try:
+            torch.save(data, FILE_PATH)
+            return True
+        except:
+            return False
     def load(self, FILE_PATH):
         self.data = torch.load(FILE_PATH)
 
