@@ -64,5 +64,5 @@ class AdminConsole():
                     #importlib.reload(self.register_commands[cmd])
                     try:
                         self.register_commands[cmd].command(c, args)
-                    except:
-                        Debug.print(f"{cmd} failed!")
+                    except Exception as exc:
+                        Debug.print(exc.message)
