@@ -24,28 +24,36 @@ HOST=cfg['host']
 PORT=cfg['port']
 
 # init bot_module_namer and Module-Controller and feed the modules into the ai
-bot_module_namer = Training()
+bot_module_namer = Training("Module Namer")
+bot_module_cmd_predictor = Training("Module CMD Predictor")
+
 mc = ModuleController("./modules")
 mc.find_all_files()
 mc.load_all_module()
 
+
+# init AI
+
+# bot module namer && bot module command predictor
 for module in mc.modules:
     tmp_arr = []
     tmp_config = module.getConfig()
 
     for i in range(len(tmp_config["commands"])):
         if tmp_config["commands"][i]["language"] == cfg['language']:
-            
-            tmp_arr.extend(tmp_config["commands"][i]["examples"])
-    
+           tmp_arr.extend(tmp_config["commands"][i]["examples"])
+        
+        bot_module_cmd_predictor.add(tmp_config["config"][i]["examples"], tmp_config["config"][i]["command-name"])
     bot_module_namer.add(tmp_arr, module.module_name)
 
-#bot_module_namer.create_set()
-#bot_module_namer.train(num_epochs=5000, batch_size=8, learning_rate=0.001, hidden_size=8, num_workers=0, FILE_PATH="DATA.pth")
-
-if not bot_module_namer.load(FILE_PATH="./data/ai/Module_Namer.pth"):
+if not bot_module_namer.load(FILE_PATH="./data/ai/Module_Namer.ai"):
     bot_module_namer.create_set()
-    bot_module_namer.train(num_epochs=5000, batch_size=8,learning_rate=0.001, hidden_size=8, num_workers=0, FILE_PATH="./data/ai/Module_Namer.Pth")
+    bot_module_namer.train(num_epochs=5000, batch_size=8,learning_rate=0.001, hidden_size=8, num_workers=0, FILE_PATH="./data/ai/Module_Namer.ai")
+
+if not bot_module_cmd_predictor.load(FILE_PATH="./data/ai/Module_Command.ai"):
+    bot_module_cmd_predictor.create_set()
+    bot_module_cmd_predictor.train(num_epochs=5000, batch_size=8, learning_rate=0.001, hidden_size=8, num_workers=0, FILE_PATH="./data/ai/Module.Command.ai")
+
 # init user-manager
 userManager = UserManager("./data/")
 

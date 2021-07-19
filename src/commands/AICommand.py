@@ -23,10 +23,10 @@ class AICommand():
                     
                     self.bot.add(tmp_arr, module.module_name)
                 self.bot.create_set()
-                self.bot.train(num_epochs=5000, batch_size=8, learning_rate=0.01, hidden_size=8, num_workers=0, FILE_PATH="./data/ai/Module_Namer.pth")
+                self.bot.train(num_epochs=5000, batch_size=8, learning_rate=0.01, hidden_size=8, num_workers=0, FILE_PATH="./data/ai/Module_Namer.ai")
             
             elif args[1] == "reload":
-                self.bot.load(FILE_PATH="./data/ai/Module_Namer.pth")
+                self.bot.load(FILE_PATH="./data/ai/Module_Namer.ai")
                 Debug.print("AI-CMD: reloaded")
 
             elif args[1] == "save" and len(args) > 2:
