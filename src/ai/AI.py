@@ -140,7 +140,14 @@ class Training():
 
         
 
-    def process(self, msg):
+    def process(self, msg: str):
+        '''
+            argument: msg [string]
+
+            return (module-name [string]; probability [float])
+        '''
+
+        test = str()
         tokenized = nu.tokenize(msg)
         bog = nu.bag_of_words(tokenized, self.all_words)
         bog = bog.reshape(1, bog.shape[0])

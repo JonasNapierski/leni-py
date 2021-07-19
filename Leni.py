@@ -29,9 +29,16 @@ mc = ModuleController("./modules")
 mc.find_all_files()
 mc.load_all_module()
 
-for m in mc.modules:
-    mcfg = m.getConfig()
-    bot.add(mcfg[cfg['language']], m.module_name)
+for module in mc.modules:
+    tmp_arr = []
+    tmp_config = module.getConfig()
+
+    for i in range(len(tmp_config["commands"])):
+        if tmp_config["commands"][i]["language"] == cfg['language']:
+            
+            tmp_arr.extend(tmp_config["commands"][i]["examples"])
+    
+    bot.add(tmp_arr, module.module_name)
 
 #bot.create_set()
 #bot.train(num_epochs=5000, batch_size=8, learning_rate=0.001, hidden_size=8, num_workers=0, FILE_PATH="DATA.pth")
