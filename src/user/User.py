@@ -12,7 +12,7 @@ class User():
     uuid= ""
     password_hash=""
     tokens=[]
-    displayname = ""
+    username = ""
 
     def __init__(self, path="./data"):
         self.path = path 
@@ -20,8 +20,8 @@ class User():
     def gen_uuid(self):
         return uuid.uuid4().__str__()
 
-    def create(self, displayname, uuid, password_hash, tokens):
-        self.displayname = displayname
+    def create(self, username, uuid, password_hash, tokens):
+        self.username = username
         self.uuid = uuid
         self.password_hash = password_hash
         self.tokens = tokens
@@ -30,7 +30,7 @@ class User():
     def load(self, file):
         with open(file, "r") as f:
             data = json.loads(f.read())
-            self.create(data["displayname"], data["uuid"], data["password_hash"], [])
+            self.create(data["username"], data["uuid"], data["password_hash"], [])
 
     
     def save_profile(self, path="./data"):

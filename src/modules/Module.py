@@ -42,6 +42,6 @@ class Module():
         self.loadConfig()
         self.loadModule()
 
-    def exec(self, msg, user):
+    def exec(self, msg, user, predicted_cmd):
         importlib.reload(self.module)
-        return self.module.exec(msg, user)
+        return self.module.exec(msg, user, predicted_cmd)

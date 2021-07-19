@@ -20,5 +20,5 @@ class UserCommand():
         if args[1] == "list":
             i = 1
             for u in self.userManager.get_users():
-                Debug.print(f"{i}: {u.displayname} / {u.uuid}")
+                Debug.print(f"{i}: {u.username} / {u.uuid}")
                 i = i+1

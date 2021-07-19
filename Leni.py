@@ -153,8 +153,8 @@ def process():
     (module, weight) = bot_module_namer.process(msg)
     Debug.print(f"Module Namer | {module}:{weight:.4f}")
 
-    (cmd, cmd_weight) = bot_module_cmd_predictor.process(msg)
-    Debug.print(f"Module CMD Predictor | {cmd}:{cmd_weight:.4f}" )
+    (predicted_cmd, cmd_weight) = bot_module_cmd_predictor.process(msg)
+    Debug.print(f"Module CMD Predictor | {predicted_cmd}:{cmd_weight:.4f}" )
 
     for m in mc.modules:
         if str(m.module_name) == str(module):
@@ -165,7 +165,8 @@ def process():
                 
                 if not os.path.exists(f"./data/config/{user.uuid}"):
                     create_user_modules()
-                return jsonify(m.exec(msg, user, cmd))
+                module_output = m.exec(msg, user, predicted_cmd)
+                return jsonify(module_output)
     return jsonify(data)
 
 

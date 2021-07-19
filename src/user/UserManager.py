@@ -52,9 +52,9 @@ class UserManager():
                 return user
         return None 
     
-    def get_user_by_name(self, displayname):
+    def get_user_by_name(self, username):
         for user in self.users:
-            if user.displayname == displayname:
+            if user.username == username:
                 return user
 
         return None 
