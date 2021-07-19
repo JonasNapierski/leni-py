@@ -87,10 +87,7 @@ def check_for_token(param):
 app = Flask(__name__)
 
 # index route -- temp leni design switch in future to a react framework http://github.com/jonasnapierski/leni-react-ui
-@app.route("/", methods=["POST", "GET"])
-def index():
-    return render_template("index.html")
-    
+
 
 # login route -- login with user and password hash to generate or get an active token
 @app.route("/login", methods=["POST"])
@@ -168,7 +165,7 @@ def process():
                 
                 if not os.path.exists(f"./data/config/{user.uuid}"):
                     create_user_modules()
-                return jsonify(m.exec(msg, user, cmd_prediction=cmd))
+                return jsonify(m.exec(msg, user, cmd))
     return jsonify(data)
 
 
