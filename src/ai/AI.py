@@ -28,22 +28,18 @@ class NeuralNet(nn.Module):
 
 
 class Training():
-    
-    data = {}
-
-    all_words = []
-    tags = []
-    xy = []
-
-    x_train = []
-    y_train = []
-
-    name = ""
-
     def __init__(self, name: str):
         self.name = name
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         Debug.print(f"Training on: {self.device}")
+
+        self.data = {}
+        self.all_words = []
+        self.tags = []
+        self.xy = []
+        self.x_train = []
+        self.y_train = []
+        self.name = ""
 
     def add(self, pattern_sentence, tag):
         self.tags.append(tag)
@@ -53,7 +49,7 @@ class Training():
 
             self.xy.append((w, tag))
 
-    def filter(self, ignore_list):
+    def filter(self, ignore_list=[]):
         self.all_words = [nu.stem(w) for w in self.all_words if w not in ignore_list]
         # remove duplicates and sorts
         self.all_words = sorted(set(self.all_words))

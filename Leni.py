@@ -37,18 +37,18 @@ for module in mc.modules:
     tmp_arr = []
     tmp_config = module.getConfig()
 
-    for i in range(len(tmp_config["commands"])):
-        if tmp_config["commands"][i]["language"] == cfg['language']:
-           tmp_arr.extend(tmp_config["commands"][i]["examples"])
-        
-        bot_module_cmd_predictor.add(tmp_config["commands"][i]["examples"], tmp_config["commands"][i]["command-name"])
+    for cmd in tmp_config["commands"]:
+        tmp_arr.extend(cmd["examples"])
+        bot_module_cmd_predictor.add(cmd["examples"], cmd["command-name"])
     bot_module_namer.add(tmp_arr, module.module_name)
 
 if not bot_module_namer.load(FILE_PATH="./data/ai/Module_Namer.ai"):
+    bot_module_namer.filter()
     bot_module_namer.create_set()
     bot_module_namer.train(num_epochs=5000, batch_size=8,learning_rate=0.001, hidden_size=8, num_workers=0, FILE_PATH="./data/ai/Module_Namer.ai")
 
 if not bot_module_cmd_predictor.load(FILE_PATH="./data/ai/Module_Command.ai"):
+    bot_module_cmd_predictor.filter()
     bot_module_cmd_predictor.create_set()
     bot_module_cmd_predictor.train(num_epochs=5000, batch_size=8, learning_rate=0.001, hidden_size=8, num_workers=0, FILE_PATH="./data/ai/Module_Command.ai")
 
