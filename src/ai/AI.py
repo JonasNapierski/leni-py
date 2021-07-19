@@ -1,4 +1,5 @@
 import numpy as np
+import os
 import torch
 import torch.nn as nn
 from src.ai.nltk_utils import NLTKUtils
@@ -118,11 +119,13 @@ class Training():
             "tags": self.tags
         }
 
-        torch.save(self.data, FILE_PATH)
+        self.save(self.data, FILE_PATH)
         return self.data
 
     def save(self,data,  FILE_PATH=""):
         try:
+            if not os.path.dirname(os.path.abspath(FILE_PATH)).exists():
+                os.makedirs(os.path.dirname(os.path.abspath(FILE_PATH)))
             torch.save(data, FILE_PATH)
             return True
         except:
