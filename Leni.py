@@ -166,7 +166,7 @@ def process():
                 if user == None:
                     return jsonify("USER NOT FOUND BY TOKEN")
                 
-                if not os.path.exists(f"/data/config/{user.uuid}"):
+                if not os.path.exists(f"./data/config/{user.uuid}"):
                     create_user_modules()
                 return jsonify(m.exec(msg, user))
     return jsonify(data)
