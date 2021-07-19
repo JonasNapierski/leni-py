@@ -37,8 +37,12 @@ class Training():
     x_train = []
     y_train = []
 
-    def __init__(self):
+    name = ""
+
+    def __init__(self, name: str):
+        self.name = name
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        Debug.print(f"Training on: {self.device}")
 
     def add(self, pattern_sentence, tag):
         self.tags.append(tag)
@@ -83,17 +87,15 @@ class Training():
         dataset = ChatDataset(self.x_train, self.y_train)
         train_loader = DataLoader(dataset=dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers)
 
-        device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-
-        model = NeuralNet(input_size, hidden_size, output_size).to(device=device)
+        model = NeuralNet(input_size, hidden_size, output_size).to(device=self.device)
 
         criterion = nn.CrossEntropyLoss()
         optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
         for epoch in range(num_epochs):
             for (words, labels) in train_loader:
-                words = words.to(device)
-                labels = labels.to(dtype=torch.long).to(device)
+                words = words.to(self.device)
+                labels = labels.to(dtype=torch.long).to(self.device)
 
                 outpus = model(words)
 
@@ -104,8 +106,8 @@ class Training():
                 optimizer.step()
             
                 if (epoch+1) % 100 == 0:
-                    print(f"Epoch [{epoch+1}/{num_epochs}], Loss: {loss.item():.9f}")
-        Debug.print(f"Final loss: {loss.item():.5f}")
+                    Debug.print(f"{self.name} | Epoch [{epoch+1}/{num_epochs}], Loss: {loss.item():.9f}")
+        Debug.print(f"{self.name} | Final loss: {loss.item():.5f}")
 
         self.data = {
             'model_state': model.state_dict(),
