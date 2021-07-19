@@ -14,8 +14,6 @@ from multiprocessing import Process
 from threading import Thread
 
 
-# init flask
-app = Flask(__name__)
 
 with open("./config.json", "r") as f:
     cfg = json.loads(f.read())
@@ -43,7 +41,7 @@ for module in mc.modules:
         if tmp_config["commands"][i]["language"] == cfg['language']:
            tmp_arr.extend(tmp_config["commands"][i]["examples"])
         
-        bot_module_cmd_predictor.add(tmp_config["config"][i]["examples"], tmp_config["config"][i]["command-name"])
+        bot_module_cmd_predictor.add(tmp_config["commands"][i]["examples"], tmp_config["commands"][i]["command-name"])
     bot_module_namer.add(tmp_arr, module.module_name)
 
 if not bot_module_namer.load(FILE_PATH="./data/ai/Module_Namer.ai"):
@@ -84,6 +82,8 @@ def check_for_token(param):
         return True
     return False
 
+# init flask
+app = Flask(__name__)
 
 # index route -- temp leni design switch in future to a react framework http://github.com/jonasnapierski/leni-react-ui
 @app.route("/", methods=["POST", "GET"])
