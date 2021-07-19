@@ -50,7 +50,7 @@ if not bot_module_namer.load(FILE_PATH="./data/ai/Module_Namer.ai"):
 
 if not bot_module_cmd_predictor.load(FILE_PATH="./data/ai/Module_Command.ai"):
     bot_module_cmd_predictor.create_set()
-    bot_module_cmd_predictor.train(num_epochs=5000, batch_size=8, learning_rate=0.001, hidden_size=8, num_workers=0, FILE_PATH="./data/ai/Module.Command.ai")
+    bot_module_cmd_predictor.train(num_epochs=5000, batch_size=8, learning_rate=0.001, hidden_size=8, num_workers=0, FILE_PATH="./data/ai/Module_Command.ai")
 
 # init user-manager
 userManager = UserManager("./data/")
@@ -153,8 +153,10 @@ def process():
     msg = data['msg']
     
     (module, weight) = bot_module_namer.process(msg)
-    
-    Debug.print(f"{module}:{weight:.4f}")
+    Debug.print(f"Module Namer | {module}:{weight:.4f}")
+
+    (cmd, cmd_weight) = bot_module_cmd_predictor.process(msg)
+    Debug.print(f"Module CMD Predictor | {cmd}:{cmd_weight:.4f}" )
 
     for m in mc.modules:
         if str(m.module_name) == str(module):
