@@ -13,15 +13,20 @@ class AICommand():
                 self.bot.print()
 
             elif args[1] == "train" and len(args) == 3:
-                for mm in self.moduleManager.modules:
-                    mcfg = mm.getConfig()
-                    self.bot.add(mcfg[str(args[2]).upper()], mm.module_name)
+                for module in self.moduleManager.modules:
+                    tmp_arr = []
+                    tmp_config = module.getConfig()
 
+                    for i in range(len(tmp_config["commands"])):
+                        if tmp_config["commands"][i]["language"] == args[2]:
+                            tmp_arr.extend(tmp_config["commands"][i]["examples"])
+                    
+                    self.bot.add(tmp_arr, module.module_name)
                 self.bot.create_set()
-                self.bot.train(num_epochs=5000, batch_size=8, learning_rate=0.01, hidden_size=8, num_workers=0, FILE_PATH="DATA.pth")
+                self.bot.train(num_epochs=5000, batch_size=8, learning_rate=0.01, hidden_size=8, num_workers=0, FILE_PATH="./data/ai/Module_Namer.pth")
             
             elif args[1] == "reload":
-                self.bot.load(FILE_PATH="DATA.pth")
+                self.bot.load(FILE_PATH="./data/ai/Module_Namer.pth")
                 Debug.print("AI-CMD: reloaded")
 
             elif args[1] == "save" and len(args) > 2:

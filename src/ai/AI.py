@@ -2,6 +2,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 from src.ai.nltk_utils import NLTKUtils
+from src.Debugger import Debug
 from torch.utils.data import Dataset, DataLoader
 
 nu = NLTKUtils()
@@ -104,7 +105,7 @@ class Training():
             
                 if (epoch+1) % 100 == 0:
                     print(f"Epoch [{epoch+1}/{num_epochs}], Loss: {loss.item():.9f}")
-        print(f"Final loss: {loss.item():.5f}")
+        Debug.print(f"Final loss: {loss.item():.5f}")
 
         self.data = {
             'model_state': model.state_dict(),
@@ -125,19 +126,23 @@ class Training():
         except:
             return False
     def load(self, FILE_PATH):
-        self.data = torch.load(FILE_PATH)
+        try:
+            self.data = torch.load(FILE_PATH)
 
-        input_size = self.data['input_size']
-        hidden_size = self.data['hidden_size']
-        output_size = self.data['output_size']
-        self.all_words = self.data['all_words']
-        self.tags = self.data['tags']
-        model_state = self.data['model_state']
+            input_size = self.data['input_size']
+            hidden_size = self.data['hidden_size']
+            output_size = self.data['output_size']
+            self.all_words = self.data['all_words']
+            self.tags = self.data['tags']
+            model_state = self.data['model_state']
 
-        self.model = NeuralNet(input_size, hidden_size, output_size).to(self.device)
-        self.model.load_state_dict(model_state)
-        self.model.eval()
-
+            self.model = NeuralNet(input_size, hidden_size, output_size).to(self.device)
+            self.model.load_state_dict(model_state)
+            self.model.eval()
+            return True
+        except:
+            Debug.print(f"AI File loading Failed: {FILE_PATH}")
+            return False
         
 
     def process(self, msg: str):

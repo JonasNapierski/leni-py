@@ -23,8 +23,8 @@ with open("./config.json", "r") as f:
 HOST=cfg['host']
 PORT=cfg['port']
 
-# init bot and Module-Controller and feed the modules into the ai
-bot = Training()
+# init bot_module_namer and Module-Controller and feed the modules into the ai
+bot_module_namer = Training()
 mc = ModuleController("./modules")
 mc.find_all_files()
 mc.load_all_module()
@@ -38,13 +38,14 @@ for module in mc.modules:
             
             tmp_arr.extend(tmp_config["commands"][i]["examples"])
     
-    bot.add(tmp_arr, module.module_name)
+    bot_module_namer.add(tmp_arr, module.module_name)
 
-#bot.create_set()
-#bot.train(num_epochs=5000, batch_size=8, learning_rate=0.001, hidden_size=8, num_workers=0, FILE_PATH="DATA.pth")
+#bot_module_namer.create_set()
+#bot_module_namer.train(num_epochs=5000, batch_size=8, learning_rate=0.001, hidden_size=8, num_workers=0, FILE_PATH="DATA.pth")
 
-bot.load(FILE_PATH="DATA.pth")
-
+if not bot_module_namer.load(FILE_PATH="./data/ai/Module_Namer.pth"):
+    bot_module_namer.create_set()
+    bot_module_namer.train(num_epochs=5000, batch_size=8,learning_rate=0.001, hidden_size=8, num_workers=0, FILE_PATH="./data/ai/Module_Namer.Pth")
 # init user-manager
 userManager = UserManager("./data/")
 
@@ -143,7 +144,7 @@ def process():
     data = request.json
     msg = data['msg']
     
-    (module, weight) = bot.process(msg)
+    (module, weight) = bot_module_namer.process(msg)
     
     Debug.print(f"{module}:{weight:.4f}")
 
@@ -164,7 +165,7 @@ def run_flask():
     app.run(host=HOST, port=PORT, debug=False)
 
 def run_admin():
-    adminConsole = AdminConsole(userManager, tokenManager, bot, mc)
+    adminConsole = AdminConsole(userManager, tokenManager, bot_module_namer, mc)
     adminConsole.run()
     adminConsole.input_loop()
 
