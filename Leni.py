@@ -168,7 +168,7 @@ def process():
                 
                 if not os.path.exists(f"./data/config/{user.uuid}"):
                     create_user_modules()
-                return jsonify(m.exec(msg, user))
+                return jsonify(m.exec(msg, user, cmd_prediction=cmd))
     return jsonify(data)
 
 
