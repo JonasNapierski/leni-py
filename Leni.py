@@ -69,6 +69,7 @@ def create_user_modules():
     for user in userManager.get_users():
         for module in mc.modules:
             user.copy_config(module.module_name, module.getConfig())
+    userManager.load_users()
 
 load_tokens()
 create_user_modules()
