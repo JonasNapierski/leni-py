@@ -119,13 +119,16 @@ class Training():
             "tags": self.tags
         }
 
-        self.save(self.data, FILE_PATH)
+        
+        if not os.path.exists("./data/ai"):
+            os.makedirs("./data/ai")
+        torch.save(self.data, FILE_PATH)
         return self.data
 
     def save(self,data,  FILE_PATH=""):
         try:
-            if not os.path.dirname(os.path.abspath(FILE_PATH)).exists():
-                os.makedirs(os.path.dirname(os.path.abspath(FILE_PATH)))
+            if not os.path.exists("./data/ai"):
+                os.makedirs("./data/ai")
             torch.save(data, FILE_PATH)
             return True
         except:
