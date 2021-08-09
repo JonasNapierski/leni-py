@@ -9,7 +9,7 @@ Leni requires git, python and pip:
 
 Step 1: Download Source Code
 ```
-$ git clone https://github.com/jonasnapierski/leni-py
+$ git clone https://github.com/zirkumflexlab/leni-py
 ```
 
 Step 2: Go into the Leni folder
