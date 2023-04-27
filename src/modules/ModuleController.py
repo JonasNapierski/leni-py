@@ -34,8 +34,11 @@ class ModuleController():
         return self.module_names
 
     def load_all_module(self) -> None:
-        if self.module_names == None:
+        if self.module_names is None:
             self.find_all_files()
+
+        if self.modules:
+            return self.modules
 
         for name in self.module_names:
             self.modules.append(self.load_module(name))
@@ -56,4 +59,4 @@ class ModuleController():
         with open(f"{self.module_path}/{self.registry_file_name}") as f:
             # check if File don't exists
             registry = json.loads(f.read())
-        
+            # TODO this is still in work in progress 

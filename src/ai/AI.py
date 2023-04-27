@@ -8,6 +8,7 @@ from torch.utils.data import Dataset, DataLoader
 
 nu = NLTKUtils()
 
+
 class NeuralNet(nn.Module):
     def __init__(self, input_size, hidden_size, num_classes):
         super(NeuralNet, self).__init__()
@@ -76,7 +77,8 @@ class Training():
 
         self.x_train = x_train
         self.y_train = y_train
-    
+
+
     def train(self, num_epochs, batch_size, learning_rate, hidden_size, num_workers, FILE_PATH):
         input_size = len(self.x_train[0])
         output_size = len(self.tags)
