@@ -40,8 +40,8 @@ $ git clone  [the module of your choice]
 ```
 
 Official Module:
- - [Weather-Module](https://github.com/zirkumflexlab/weather-module) get your weather information with Leni
- - [Finnhub-Module](https://github.com/zirkumflexlab/finnhub-module) intrested in stock! Get your stock-price
+ - [Weather-Module](https://github.com/jonasnapierski/weather-module) get your weather information with Leni
+ - [Finnhub-Module](https://github.com/jonasnapierski/finnhub-module) intrested in stock! Get your stock-price
 
 ## Run
 The easiest way to run Leni-PY is as below:
