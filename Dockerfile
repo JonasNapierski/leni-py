@@ -9,4 +9,4 @@ RUN pip install -r requirements.txt
 COPY . .
 EXPOSE 6248
 
-CMD ["python", "Leni.py"]
+CMD ["uvicorn","--port","6248", "Leni:app"]
