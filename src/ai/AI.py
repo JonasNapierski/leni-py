@@ -31,7 +31,8 @@ class NeuralNet(nn.Module):
 class Training():
     def __init__(self, name: str):
         self.name = name
-        self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        selected_dev = 'cuda' if torch.cuda.is_available() else 'cpu'
+        self.device = torch.device(selected_dev)
         Debug.print(f"Training on: {self.device}")
 
         self.data = {}
@@ -51,9 +52,11 @@ class Training():
             self.xy.append((w, tag))
 
     def filter(self, ignore_list=[]):
-        self.all_words = [nu.stem(w) for w in self.all_words if w not in ignore_list]
+        all_words = self.all_words
+        clean_list = [nu.stem(w) for w in all_words if w not in ignore_list]
         # remove duplicates and sorts
-        self.all_words = sorted(set(self.all_words))
+        clean_list = sorted(set(clean_list))
+        self.all_words = clean_list
         self.tags = sorted(set(self.tags))
 
     def print(self):
@@ -78,15 +81,27 @@ class Training():
         self.x_train = x_train
         self.y_train = y_train
 
-
-    def train(self, num_epochs, batch_size, learning_rate, hidden_size, num_workers, FILE_PATH):
+    def train(self,
+              num_epochs,
+              batch_size,
+              learning_rate,
+              hidden_size,
+              num_workers,
+              FILE_PATH):
         input_size = len(self.x_train[0])
         output_size = len(self.tags)
 
         dataset = ChatDataset(self.x_train, self.y_train)
-        train_loader = DataLoader(dataset=dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers)
+        train_loader = DataLoader(
+                dataset=dataset,
+                batch_size=batch_size,
+                shuffle=True,
+                num_workers=num_workers)
 
-        model = NeuralNet(input_size, hidden_size, output_size).to(device=self.device)
+        model = NeuralNet(
+                input_size,
+                hidden_size,
+                output_size).to(device=self.device)
 
         criterion = nn.CrossEntropyLoss()
         optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
@@ -103,9 +118,10 @@ class Training():
                 optimizer.zero_grad()
                 loss.backward()
                 optimizer.step()
-            
+
                 if (epoch+1) % 100 == 0:
-                    Debug.print(f"{self.name} | Epoch [{epoch+1}/{num_epochs}], Loss: {loss.item():.9f}")
+                    Debug.print(f"{self.name} | Epoch [{epoch+1}/{num_epochs}]\
+                            , Loss: {loss.item():.9f}")
         Debug.print(f"{self.name} | Final loss: {loss.item():.5f}")
 
         self.data = {

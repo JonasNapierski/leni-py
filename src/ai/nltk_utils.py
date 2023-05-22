@@ -9,6 +9,7 @@ try:
 except LookupError:
     nltk.download('punkt')
 
+
 class NLTKUtils():
     stemmer = PorterStemmer()
 
@@ -19,7 +20,6 @@ class NLTKUtils():
         """
         return nltk.word_tokenize(sentence)
 
-
     def stem(self, word):
         """
         stemming = find the root form of the word
@@ -29,7 +29,6 @@ class NLTKUtils():
         -> ["organ", "organ", "organ"]
         """
         return self.stemmer.stem(word.lower())
-
 
     def bag_of_words(self, tokenized_sentence, words):
         """
@@ -45,7 +44,7 @@ class NLTKUtils():
         # initialize bag with 0 for each word
         bag = np.zeros(len(words), dtype=np.float32)
         for idx, w in enumerate(words):
-            if w in sentence_words: 
+            if w in sentence_words:
                 bag[idx] = 1
 
         return bag
