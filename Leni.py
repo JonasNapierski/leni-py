@@ -18,10 +18,6 @@ mc = ModuleController("./modules")
 mc.find_all_files()
 mc.load_all_module()
 
-
-# init AI
-
-
 # bot module namer && bot module command predictor
 for module in mc.modules:
     tmp_arr = []
@@ -84,8 +80,6 @@ def list_module(module: str):
         if m.module_name == str(module):
             return m.exec("")
     return {"msg": "No module found", "code": 404}
-
-
 
 
 @app.post("/api/process")

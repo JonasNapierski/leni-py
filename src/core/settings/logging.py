@@ -1,5 +1,7 @@
 """static methode function & constants
 """
 
-LOGGING_CORE = "Core"
-LOGGING_API = "API"
+LOGGING_NAME_CORE = "Core"
+LOGGING_NAME_API = "API"
+
+LOGGING_FILE = ""
