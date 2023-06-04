@@ -1,10 +1,13 @@
+import json
+import logging
 from fastapi import FastAPI
 from src.core.modules.ModuleController import ModuleController
 from src.api.models.request_model import RequestText
 from src.core.ai.AI import Training
-import json
+from src.core.settings.logging import LOGGING_NAME_API
 
 app = FastAPI()
+log = logging.getLogger(LOGGING_NAME_API)
 
 with open("./config.json", "r") as f:
     cfg = json.loads(f.read())
@@ -20,7 +23,7 @@ mc.load_all_module()
 # bot module namer && bot module command predictor
 for module in mc.modules:
     tmp_arr = []
-    tmp_config = module.getConfig()
+    tmp_config = module.etConfig()
     for cmd in tmp_config["commands"]:
         tmp_arr.extend(cmd["examples"])
         bot_module_cmd_predictor.add(cmd["examples"], cmd["command-name"])
@@ -63,6 +66,7 @@ def list_all_module():
 
 @app.get("/api/modules")
 def list_modules():
+
     return list_all_module()
 
 
