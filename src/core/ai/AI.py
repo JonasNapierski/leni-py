@@ -1,13 +1,14 @@
 import numpy as np
+import logging
 import os
 import torch
 import torch.nn as nn
 from src.ai.nltk_utils import NLTKUtils
-from src.Debugger import Debug
+from src.core.settings.logging import LOGGING_NAME_CORE
 from torch.utils.data import Dataset, DataLoader
 
 nu = NLTKUtils()
-
+log = logging.getLogger(LOGGING_NAME_CORE)
 
 class NeuralNet(nn.Module):
     def __init__(self, input_size, hidden_size, num_classes):
@@ -33,7 +34,7 @@ class Training():
         self.name = name
         selected_dev = 'cuda' if torch.cuda.is_available() else 'cpu'
         self.device = torch.device(selected_dev)
-        Debug.print(f"Training on: {self.device}")
+        log.debug(f"Training on: {self.device}")
 
         self.data = {}
         self.all_words = []
@@ -120,9 +121,9 @@ class Training():
                 optimizer.step()
 
                 if (epoch+1) % 100 == 0:
-                    Debug.print(f"{self.name} | Epoch [{epoch+1}/{num_epochs}]\
+                    log.debug(f"{self.name} | Epoch [{epoch+1}/{num_epochs}]\
                             , Loss: {loss.item():.9f}")
-        Debug.print(f"{self.name} | Final loss: {loss.item():.5f}")
+        log.debug(f"{self.name} | Final loss: {loss.item():.5f}")
 
         self.data = {
             'model_state': model.state_dict(),
@@ -163,7 +164,7 @@ class Training():
             self.model.eval()
             return True
         except:
-            Debug.print(f"AI File loading Failed: {FILE_PATH}")
+            log.debug(f"AI File loading Failed: {FILE_PATH}")
             return False
         
 
