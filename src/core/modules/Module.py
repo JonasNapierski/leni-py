@@ -1,7 +1,10 @@
 import importlib
-from io import FileIO
 import json
-import os
+import logging
+from src.core.settings.logging import LOGGING_NAME_CORE
+
+log = logging.getLogger(LOGGING_NAME_CORE)
+
 
 class Module():
     module_name=""
