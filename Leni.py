@@ -1,8 +1,7 @@
 from fastapi import FastAPI
-from src.modules.ModuleController import ModuleController
-from src.api.request_model import RequestText
-from src.Debugger import Debug
-from src.ai.AI import Training
+from src.core.modules.ModuleController import ModuleController
+from src.api.models.request_model import RequestText
+from src.core.ai.AI import Training
 import json
 
 app = FastAPI()
