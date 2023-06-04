@@ -66,7 +66,6 @@ def list_all_module():
 
 @app.get("/api/modules")
 def list_modules():
-
     return list_all_module()
 
 
@@ -95,10 +94,10 @@ def process(req: RequestText):
     msg = req.msg
 
     (module, weight) = bot_module_namer.process(msg)
-    Debug.print(f"Module Namer | {module}:{weight:.4f}")
+    log.debug(f"Module Namer | {module}:{weight:.4f}")
 
     (predicted_cmd, cmd_weight) = bot_module_cmd_predictor.process(msg)
-    Debug.print(f"Module CMD Predictor | {predicted_cmd}:{cmd_weight:.4f}")
+    log.debug(f"Module CMD Predictor | {predicted_cmd}:{cmd_weight:.4f}")
 
     for m in mc.modules:
         if str(m.module_name) == str(module):
