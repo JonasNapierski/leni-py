@@ -3,11 +3,7 @@
 
 name: PyTest Testing
 
-on:
-  push:
-    branches: [ "develop" ]
-  pull_request:
-    branches: [ "develop" ]
+on: [push,pull_request]
 
 permissions:
   contents: read
