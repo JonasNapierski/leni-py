@@ -1,6 +1,7 @@
-from src.modules.ModuleController import ModuleController
-from src.Debugger import Debug
 from fastapi import FastAPI
+from src.modules.ModuleController import ModuleController
+from src.api.request_model import RequestText
+from src.Debugger import Debug
 from src.ai.AI import Training
 import json
 
@@ -85,15 +86,10 @@ def list_module(module: str):
     return {"msg": "No module found", "code": 404}
 
 
-from pydantic import BaseModel
-
-
-class TextProcess(BaseModel):
-    msg: str
 
 
 @app.post("/api/process")
-def process(req: TextProcess):
+def process(req: RequestText):
     """processes the text request and response with the module answer
 
         :rtype: dict
