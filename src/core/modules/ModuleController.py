@@ -1,9 +1,9 @@
 from glob import glob
-from io import FileIO
 from src.modules.Module import Module
 import json
 import re
 import os
+
 
 class ModuleController():
     module_names = []

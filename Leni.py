@@ -1,11 +1,13 @@
-from fastapi import FastAPI
-from src.modules.ModuleController import ModuleController
-from src.api.request_model import RequestText
-from src.Debugger import Debug
-from src.ai.AI import Training
 import json
+import logging
+from fastapi import FastAPI
+from src.core.modules.ModuleController import ModuleController
+from src.api.models.request_model import RequestText
+from src.core.ai.AI import Training
+from src.core.settings.logging import LOGGING_NAME_API
 
 app = FastAPI()
+log = logging.getLogger(LOGGING_NAME_API)
 
 with open("./config.json", "r") as f:
     cfg = json.loads(f.read())
@@ -18,14 +20,10 @@ mc = ModuleController("./modules")
 mc.find_all_files()
 mc.load_all_module()
 
-
-# init AI
-
-
 # bot module namer && bot module command predictor
 for module in mc.modules:
     tmp_arr = []
-    tmp_config = module.getConfig()
+    tmp_config = module.etConfig()
     for cmd in tmp_config["commands"]:
         tmp_arr.extend(cmd["examples"])
         bot_module_cmd_predictor.add(cmd["examples"], cmd["command-name"])
@@ -86,8 +84,6 @@ def list_module(module: str):
     return {"msg": "No module found", "code": 404}
 
 
-
-
 @app.post("/api/process")
 def process(req: RequestText):
     """processes the text request and response with the module answer
@@ -98,10 +94,10 @@ def process(req: RequestText):
     msg = req.msg
 
     (module, weight) = bot_module_namer.process(msg)
-    Debug.print(f"Module Namer | {module}:{weight:.4f}")
+    log.debug(f"Module Namer | {module}:{weight:.4f}")
 
     (predicted_cmd, cmd_weight) = bot_module_cmd_predictor.process(msg)
-    Debug.print(f"Module CMD Predictor | {predicted_cmd}:{cmd_weight:.4f}")
+    log.debug(f"Module CMD Predictor | {predicted_cmd}:{cmd_weight:.4f}")
 
     for m in mc.modules:
         if str(m.module_name) == str(module):

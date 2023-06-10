@@ -1,0 +1,8 @@
+version: "3.5"
+services:
+  leni-py:
+    build: .
+    ports:
+      - 6248:6248
+    hostname: leni-py
+

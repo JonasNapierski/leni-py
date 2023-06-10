@@ -1,5 +1,8 @@
+import logging
 from src.ai.AI import Training
-from src.Debugger import Debug
+from src.core.settings.logging import LOGGING_NAME_CORE
+
+log = logging.getLogger(LOGGING_NAME_CORE)
 
 class AICommand():
     def __init__(self, bot, moduleManager):
@@ -27,16 +30,16 @@ class AICommand():
             
             elif args[1] == "reload":
                 self.bot.load(FILE_PATH="./data/ai/Module_Namer.ai")
-                Debug.print("AI-CMD: reloaded")
+                log.debug("AI-CMD: reloaded")
 
             elif args[1] == "save" and len(args) > 2:
                 
                 try:
                     self.bot.save(self.bot.data, args[2])
-                    Debug.print(f"AI-CMD: AI saved to {args[2]}")
+                    log.debug(f"AI-CMD: AI saved to {args[2]}")
                 except Exception as exp:
-                    Debug.print(exp)
-                    Debug.print("AI-CMD: Saving file failed!")
+                    log.debug(exp)
+                    log.debug("AI-CMD: Saving file failed!")
         else:
-            Debug.print("AI-CMD: AI print | Print the current Dataset")
-            Debug.print("AI-CMD: AI train [language] | trains the  AI on the language")
+            log.debug("AI-CMD: AI print | Print the current Dataset")
+            log.debug("AI-CMD: AI train [language] | trains the  AI on the language")

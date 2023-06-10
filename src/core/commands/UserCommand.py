@@ -1,8 +1,10 @@
-
+import logging
+import hashlib
 from src.user.UserManager import UserManager
 from src.user.User  import User
-from src.Debugger import Debug
-import hashlib
+from src.core.settings.logging import LOGGING_NAME_CORE
+
+log = logging.getLogger(LOGGING_NAME_CORE)
 
 class UserCommand():
     userManager = None
@@ -20,5 +22,5 @@ class UserCommand():
         if args[1] == "list":
             i = 1
             for u in self.userManager.get_users():
-                Debug.print(f"{i}: {u.username} / {u.uuid}")
+                log.debug(f"{i}: {u.username} / {u.uuid}")
                 i = i+1

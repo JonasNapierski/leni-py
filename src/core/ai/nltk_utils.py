@@ -1,11 +1,15 @@
 import numpy as np
 import nltk
+import logging
 from nltk.stem.porter import PorterStemmer
-from src.Debugger import Debug
+from src.core.settings.logging import LOGGING_NAME_CORE
+
+
+log = logging.getLogger(LOGGING_NAME_CORE)
 
 try:
     nltk.data.find('tokenizers/punkt')
-    Debug.print("tokenizers/punkt init")
+    log.debug("tokenizers/punkt init")
 except LookupError:
     nltk.download('punkt')
 
