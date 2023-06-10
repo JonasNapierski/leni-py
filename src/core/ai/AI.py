@@ -3,7 +3,7 @@ import logging
 import os
 import torch
 import torch.nn as nn
-from src.ai.nltk_utils import NLTKUtils
+from src.core.ai.nltk_utils import NLTKUtils
 from src.core.settings.logging import LOGGING_NAME_CORE
 from torch.utils.data import Dataset, DataLoader
 
