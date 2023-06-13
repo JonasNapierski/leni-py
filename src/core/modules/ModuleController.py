@@ -1,5 +1,5 @@
 from glob import glob
-from src.modules.Module import Module
+from src.core.modules.Module import Module
 import json
 import re
 import os
