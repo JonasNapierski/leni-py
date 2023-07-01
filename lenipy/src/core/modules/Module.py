@@ -1,9 +1,8 @@
 import importlib
 import json
 import logging
-from src.core.settings.logging import LOGGING_NAME_CORE
 
-log = logging.getLogger(LOGGING_NAME_CORE)
+log = logging.getLogger("leni.modules")
 
 
 class Module():

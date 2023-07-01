@@ -4,11 +4,10 @@ import os
 import torch
 import torch.nn as nn
 from src.core.ai.nltk_utils import NLTKUtils
-from src.core.settings.logging import LOGGING_NAME_CORE
 from torch.utils.data import Dataset, DataLoader
 
 nu = NLTKUtils()
-log = logging.getLogger(LOGGING_NAME_CORE)
+log = logging.getLogger("leni.ai")
 
 class NeuralNet(nn.Module):
     def __init__(self, input_size, hidden_size, num_classes):
