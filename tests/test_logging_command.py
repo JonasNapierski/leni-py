@@ -1,5 +1,5 @@
 import logging
-from src.core.settings.logging import Configuration
+from Leni.src.core.settings.logging import Configuration
 
 
 def test_empty_config():
