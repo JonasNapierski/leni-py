@@ -1,0 +1,14 @@
+FROM python:3.8.10
+
+WORKDIR /app
+
+COPY lenipy/requirements.txt .
+
+RUN pip install -r requirements.txt
+
+COPY lenipy/src/ lenipy/src/
+COPY lenipy/tests/ lenipy/tests/
+COPY setup.py .
+
+RUN python -m pip install -e .
+CMD ["pytest","."]

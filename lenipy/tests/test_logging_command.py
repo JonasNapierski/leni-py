@@ -16,7 +16,7 @@ def test_command_loaded_config():
 
 
 def test_environment_loaded_config():
-    os.environ["logging_defaul_level"] = "0"
+    os.environ["logging_default_level"] = "0"
     os.environ["logging_logger_configuration_path"] = "/"
     os.environ["logging_output_directory"] = "/"
 

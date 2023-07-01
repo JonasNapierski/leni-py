@@ -12,12 +12,17 @@ class Configuration(BaseSettings):
     logger_configuration_path: str = Field("/app/logger/loggers.yml")
     output_directory: str = Field("/var/log/leni-py/")
 
+    class Config:
+        env_prefix = "logging_"
+        env_file = "/app/env/logging_configuration.env"
+        env_file_encoding = "utf-8"
+
 
 def get_config() -> Configuration:
     """
 
-    :rtype:
-    :return:
+    :rtype: Configuration
+    :return: logging confing
     """
     global __config
 
