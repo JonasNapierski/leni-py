@@ -4,3 +4,13 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.test
+  leni-py-db:
+    build:
+      context: .
+      dockerfile: Dockerfile.pocketbase
+    ports:
+      - 8081:8080
+    volumes:
+      - vol-pb-leni:/pb/
+volumes:
+  vol-pb-leni:
