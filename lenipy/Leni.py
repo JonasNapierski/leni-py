@@ -5,6 +5,14 @@ from src.core.modules.ModuleController import ModuleController
 from src.api.models.request_model import RequestText
 from src.core.ai.AI import Training
 
+# --------------- Testing -----------------------
+import lenipy.src.core.db.driver.Pocketbase as pb
+
+driver = pb.PocketbaseDriver("tester@tinytechie.lan","1234567890", "http://localhost:8081/")
+print(driver.get_modules_by_id("i2alteowwdzczag"))
+
+
+# -----------------------------------------------
 app = FastAPI()
 log = logging.getLogger("leni.core")
 
