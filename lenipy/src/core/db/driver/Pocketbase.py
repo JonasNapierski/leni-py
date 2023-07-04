@@ -1,5 +1,4 @@
 from pocketbase import PocketBase
-from pocketbase.models import Record
 from lenipy.src.core.db.BaseDriver import BaseDriver
 from lenipy.src.core.models.modules import Modules
 
@@ -18,6 +17,8 @@ class PocketbaseDriver(BaseDriver):
                 }
                 )
 
+    
+
     def get_modules_by_id(self, mod_id: str) -> Modules:
         module_raw = self.client.collection("modules").get_one(mod_id)
         
@@ -28,3 +29,4 @@ class PocketbaseDriver(BaseDriver):
         return Modules(mod_id=data_mod_id,
                        name=data_name,
                        url=data_url)
+
