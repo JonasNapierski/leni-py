@@ -8,10 +8,13 @@ from src.core.ai.AI import Training
 # --------------- Testing -----------------------
 import lenipy.src.core.db.driver.Pocketbase as pb
 
-driver = pb.PocketbaseDriver("tester@tinytechie.lan","1234567890", "http://localhost:8081/")
-print(driver.get_modules_by_id("i2alteowwdzczag"))
+driver = pb.PocketbaseDriver("tester@tinytechie.lan",
+                             "1234567890",
+                             "http://localhost:8081/")
 
-
+print(driver.get_mod_config_list())
+print(driver.get_mod_config_by_field("5zmxe70bcyowz40", "hello"))
+exit()
 # -----------------------------------------------
 app = FastAPI()
 log = logging.getLogger("leni.core")
