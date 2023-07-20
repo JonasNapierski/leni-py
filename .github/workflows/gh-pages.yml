@@ -9,6 +9,8 @@ on:
 jobs:
   pages:
     runs-on: ubuntu-20.04
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
     - name: Checkout
       uses: actions/checkout@v2.3.4
