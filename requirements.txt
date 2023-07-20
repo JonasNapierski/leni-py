@@ -31,7 +31,7 @@ nvidia-nccl-cu11==2.14.3
 nvidia-nvtx-cu11==11.7.91
 pydantic==1.10.7
 regex==2023.5.5
-requests==2.30.0
+requests==2.31.0
 sniffio==1.3.0
 starlette==0.27.0
 sympy==1.12
