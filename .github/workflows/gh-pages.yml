@@ -2,7 +2,7 @@ name: Deploy Sphinx documentation to Pages
 
 on:
   push:
-    branches: [gh-pages] # branch to trigger deployment
+    branches: [main] # branch to trigger deployment
   pull_request:
     branches: [gh-pages]
 
@@ -10,11 +10,38 @@ jobs:
   pages:
     runs-on: ubuntu-20.04
     steps:
-    - id: deployment
-      uses: sphinx-notes/pages@v3
+    - name: Checkout
+      uses: actions/checout@v2.3.4
+    - name: Set up Python
+      
+      uses: actions/setup-python@v2.2.1
       with:
-        publish: false
-    - uses: peaceiris/actions-gh-pages@v3
+        python-version: 3.10
+
+    - name: Install dependencies
+      run: |
+        python -m pip install -U sphinx
+        python -m pip install sphinx-rtd-theme
+
+    - name: make the sphinx docs
+      run: |
+        make -C docs clean
+        make -C docs html
+
+    - name: Init new repo in dist folder and commit generated files
+      run: |
+        cd docs/build/html
+        git init
+        touch .nojekyll
+        git add -A
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git commit -m "deploy"
+
+    - name: Force push to destination branch
+      uses: ad-m/github-push-action@v0.5.0
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ${{ steps.deployment.outputs.artifact }}
+        branch: gh-pages
+        force: true
+        directory: ./docs/build/html
