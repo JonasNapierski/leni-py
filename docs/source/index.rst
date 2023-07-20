@@ -5,6 +5,7 @@
 
 Welcome to Leni-py's documentation!
 ===================================
+
 Welcome to our open-source project! We are thrilled to introduce you to our revolutionary local AI – a modular and powerful alternative to Siri.
 
 Our AI has been meticulously designed to understand and respond to text commands, bringing an entirely new level of convenience and intelligence to your fingertips. Inspired by the beauty of open-source collaboration, we believe that every user should have the opportunity to personalize and extend the capabilities of their AI assistant.
