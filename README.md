@@ -49,4 +49,3 @@ The easiest way to run Leni-PY is as below:
 $ python Leni.py
 ```
 
-(Test)
