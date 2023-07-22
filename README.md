@@ -1,7 +1,7 @@
 # Leni-PY
 Leni-PY or just Leni is a home assistant backend. Based on Flask it is designed to quickly extend your own assistant with simple Python modules. 
 
-Leni is a project where everyone can participate. 
+Leni is a project where everyone can participate. More information found in the [developer wiki](https://jonasnapierski.github.io/leni-py/)
 
 
 ## Installing
