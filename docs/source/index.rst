@@ -24,9 +24,15 @@ Welcome aboard, and let's embark on this exciting journey of innovation and coll
 
    modules
 
+
 Indices and tables
 ==================
 
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+Special Thank you to
+=====================
+- Leif
+- Byli
