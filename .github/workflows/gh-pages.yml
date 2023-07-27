@@ -1,5 +1,4 @@
 name: Deploy Sphinx documentation to Pages
-
 on:
   push:
     branches: [main] # branch to trigger deployment
@@ -10,7 +9,7 @@ jobs:
   pages:
     permissions:
       contents: write
-    runs-on: ubuntu-20.04
+    runs-on: self-hosted
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
