@@ -30,7 +30,7 @@ jobs:
       run: |
         make -C docs clean
         make -C docs html
-    - name: Deplay to gh-pages
+    - name: Deploy to gh-pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
